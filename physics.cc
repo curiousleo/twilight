@@ -53,8 +53,6 @@ string System::str(bool verbose) {
         if (verbose)
             os << it->r << " " << it->v << " " << it->a
                 << " " << it->mass << endl;
-        // else
-            // os << real(it->r) << " " << imag(it->r) << " " << it->mass << endl;
     }
     return os.str();
 }

@@ -12,7 +12,7 @@ struct Body {
     double mass;
     Vector3D r, v, a;
 
-    Body(Vector3D _r, Vector3D _v, double _m) :
+    Body(const Vector3D& _r, const Vector3D& _v, const double _m) :
         r(_r), v(_v), mass(_m) {}
 };
 

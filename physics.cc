@@ -1,9 +1,11 @@
 #include "physics.hh"
 
+using namespace std;
+
 // Calculates the force acting on body 2
-Vector3D gravity(const Body b1, const Body b2) {
+Vector3D gravity(const Body& b1, const Body& b2) {
     Vector3D d = b1.r - b2.r;
-    return b1.mass * b2.mass * d / pow((double)d.abs(), 3);
+    return b1.mass * b2.mass * d / pow(d.len(), 3);
 }
 
 // Update positions

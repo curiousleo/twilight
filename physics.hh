@@ -10,9 +10,9 @@
 
 struct Body {
     double mass;
-    Vector3D<double> r, v, a;
+    Vector3D r, v, a;
 
-    Body(Vector3D<double> _r, Vector3D<double> _v, double _m) :
+    Body(Vector3D _r, Vector3D _v, double _m) :
         r(_r), v(_v), mass(_m) {}
 };
 
@@ -22,27 +22,26 @@ struct System {
 
     System(std::vector<Body> b, double t) : bodies(b), dt(t) {}
 
-
     bool pulse(void);
     std::string str();
     std::string str(bool);
 };
 
 // Calculates the force acting on body 2
-Vector3D<double> gravity(const Body b1, const Body b2) {
-    Vector3D<double> d(b1.r - b2.r);
+Vector3D gravity(const Body b1, const Body b2) {
+    Vector3D d = b1.r - b2.r;
     return b1.mass * b2.mass * d / pow((double)d.abs(), 3);
 }
 
 // Update positions
 bool System::pulse(void) {
     std::vector<Body>::iterator it1, it2;
-    Vector3D<double> f2;
+    Vector3D f2;
     double theta;
 
     for (it1 = bodies.begin(); it1 != bodies.end(); it1++) {
         // Reset acceleration
-        it1->a = Vector3D<double>();
+        it1->a = Vector3D();
 
         for (it2 = bodies.begin(); it2 != bodies.end(); it2++) {
             // Only calculate gravity force for distinct bodies
@@ -79,7 +78,7 @@ std::string System::str(bool verbose) {
         if (verbose)
             os << it->r << " " << it->v << " " << it->a
                 << " " << it->mass << endl;
-        else
+        // else
             // os << real(it->r) << " " << imag(it->r) << " " << it->mass << endl;
     }
     return os.str();

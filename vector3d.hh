@@ -57,7 +57,7 @@ struct Vector3D {
         return os.str();
     }
 
-    // Input/Output streams
+    // Input/Output stream
     friend std::ostream& operator<<(std::ostream&, const Vector3D&);
 
     // Special Operations

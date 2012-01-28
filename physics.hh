@@ -23,9 +23,15 @@ struct System {
     System(std::vector<Body> b, double t) : bodies(b), dt(t) {}
 
     bool pulse(void);
-    std::string str();
-    std::string str(bool);
+    std::string str() const;
+    std::string str(bool) const;
+    
+    // Input/Output stream
+    friend std::ostream& operator<<(std::ostream&, const System&);
 };
+
+// Output stream
+std::ostream& operator<<(std::ostream&, const System&);
 
 Vector3D gravity(const Body&, const Body&);
 

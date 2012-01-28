@@ -42,8 +42,8 @@ bool System::pulse(void) {
 }
 
 // String formatter
-string System::str(void) { return str(false); }
-string System::str(bool verbose) {
+string System::str(void) const { return str(false); }
+string System::str(bool verbose) const {
     ostringstream os;
     os << bodies.size() << endl;
 
@@ -55,4 +55,10 @@ string System::str(bool verbose) {
                 << " " << it->mass << endl;
     }
     return os.str();
+}
+
+// Output stream
+std::ostream& operator<<(std::ostream& os, const System& s) {
+    os << s.str();
+    return os;
 }

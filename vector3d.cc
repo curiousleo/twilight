@@ -59,3 +59,9 @@ void Vector3D::normalize() {
     if (l == 0) return;
     x /= l; y /= l; z /= l;
 }
+
+// Output stream
+std::ostream& operator<<(std::ostream& os, const Vector3D& w) {
+    os << w.str();
+    return os;
+}

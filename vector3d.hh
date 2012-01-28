@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <sstream>
 
 struct Vector3D {
     // Properties
@@ -44,19 +45,26 @@ struct Vector3D {
     friend double d2(Vector3D, Vector3D);        // Distance^2
 
     // Vector3D Properties
-    double len() {
+    double len() const {
         return sqrt(x*x + y*y + z*z);
     }
-    double len2() {
+    double len2() const {
         return (x*x + y*y + z*z);
+    }
+    std::string str() const {
+        std::ostringstream os;
+        os << "(" << x << "," << y << "," << z << ")";
+        return os.str();
     }
 
     // Input/Output streams
-    friend std::istream& operator>>(std::istream&, Vector3D&);
-    friend std::ostream& operator<<(std::ostream&, Vector3D);
+    friend std::ostream& operator<<(std::ostream&, const Vector3D&);
 
     // Special Operations
     void normalize();
 };
+
+// Output stream
+std::ostream& operator<<(std::ostream&, const Vector3D&);
 
 #endif

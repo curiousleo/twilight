@@ -3,7 +3,15 @@
 using namespace std;
 
 int main(void) {
-    Vector3D v(1,2,3);
-    cout << v << endl;
+    unsigned int i;
+    System s;
+
+    cin >> i;
+
+    for (unsigned int j = 0; j != i; j++) {
+        cin >> s;
+    }
+
+    cout << s << endl;
     return 0;
 }

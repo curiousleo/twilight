@@ -50,14 +50,21 @@ string System::str(bool verbose) const {
     for (
             vector<Body>::const_iterator it = bodies.begin();
             it != bodies.end(); it++) {
-        if (verbose)
-            os << it->r << " " << it->v << " " << it->a
-                << " " << it->mass << endl;
+        os << it->r << " " << it->v << " " << it->a
+            << " " << it->mass << endl;
     }
     return os.str();
 }
 
-// Output stream
+// Input/Output stream
+std::istream& operator>>(std::istream& is, System& s) {
+    string name;
+    double rx, ry, rz, vx, vy, vz, m, R;
+
+    is >> name >> rx >> ry >> rz >> vx >> vy >> vz >> m >> R;
+    s.bodies.push_back(Body(
+                Vector3D(rx, ry, rz), Vector3D(vx, vy, vz), m, R, name));
+}
 std::ostream& operator<<(std::ostream& os, const System& s) {
     os << s.str();
     return os;

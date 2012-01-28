@@ -10,7 +10,7 @@ Vector3D gravity(const Body& b1, const Body& b2) {
 
 // Update positions
 bool System::pulse(void) {
-    std::vector<Body>::iterator it1, it2;
+    vector<Body>::iterator it1, it2;
     Vector3D f2;
     double theta;
 
@@ -42,13 +42,13 @@ bool System::pulse(void) {
 }
 
 // String formatter
-std::string System::str(void) { return str(false); }
-std::string System::str(bool verbose) {
-    std::ostringstream os;
+string System::str(void) { return str(false); }
+string System::str(bool verbose) {
+    ostringstream os;
     os << bodies.size() << endl;
 
     for (
-            std::vector<Body>::const_iterator it = bodies.begin();
+            vector<Body>::const_iterator it = bodies.begin();
             it != bodies.end(); it++) {
         if (verbose)
             os << it->r << " " << it->v << " " << it->a

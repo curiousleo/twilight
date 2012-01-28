@@ -1,77 +1,58 @@
-#ifndef GUARD_vector3d_hh
-#define GUARD_vector3d_hh
+#ifndef GUARD_vector_hh
+#define GUARD_vector_hh
 
-#include <iostream>
-#include <sstream>
+struct Vector3D {
+    // Properties
+    double x, y, z;
 
-template <class T> struct Vector3D {
-    T x, y, z;
+    // Constructors
+    Vector3D(Vector3D v) : x(v.x), y(v.y), z(v.z) {}
+    Vector3D(double _x, double _y, double _z) :
+            x(_x), y(_y), z(_z) {};
+    ~Vector3D() {};
 
-    Vector3D(T _x, T _y, T _z) :
-	    x(_x), y(_y), z(_z) {}
-    Vector3D() : x(0), y(0), z(0) {}
+    // Vector3D Unary Operations
+    Vector3D operator-();
 
-    std::string str(void) {
-        std::ostringstream s;
-        s << "(" << this->x << "," << this->y << "," << this->z << ")";
-        return s.str();
+    // Scalar Multiplication
+    friend Vector3D operator*(int, Vector3D);
+    friend Vector3D operator*(double, Vector3D);
+    friend Vector3D operator*(Vector3D, int);
+    friend Vector3D operator*(Vector3D, double);
+    // Scalar Division
+    friend Vector3D operator/(Vector3D, int);
+    friend Vector3D operator/(Vector3D, double);
+
+    // Vector3D Arithmetic Operations
+    Vector3D operator+(Vector3D);    // vector add
+    Vector3D operator-(Vector3D);    // vector subtract
+    double operator*(Vector3D);    // inner dot product
+
+    Vector3D& operator*=(double);      // vector scalar mult
+    Vector3D& operator/=(double);      // vector scalar div
+
+    // Comparison
+    int operator==(Point);
+    int operator!=(Point);
+    
+    // Point Relations
+    friend double d(Point, Point);         // Distance
+    friend double d2(Point, Point);        // Distance^2
+
+    // Vector3D Properties
+    double len() {
+        return sqrt(x*x + y*y + z*z);
+    }
+    double len2() {
+        return (x*x + y*y + z*z);
     }
 
-    T abs2(void) {
-        return x*x + y*y + z*z;
-    }
+    // Input/Output streams
+    friend istream& operator>>(istream&, Point&);
+    friend ostream& operator<<(ostream&, Point);
 
-    T abs(void) {
-        return sqrt(this->abs2());
-    }
-
-    Vector3D operator+(const Vector3D& v) {
-        return Vector3D(
-                x + v.x,
-                y + v.y,
-                z + v.z);
-    }
-
-    Vector3D operator +=(Vector3D v) {
-        *this = *this + v;
-        return *this;
-    }
-
-    Vector3D operator -(Vector3D v) {
-        return Vector3D(
-                x - v.x,
-                y - v.y,
-                z - v.z);
-    }
-
-    Vector3D operator -(void) {
-        return Vector3D(-x, -y, -z);
-    }
-
-    Vector3D operator -=(Vector3D v) {
-        *this = *this - v;
-        return *this;
-    }
-
-    // Scalar multiplication
-    Vector3D operator *(T k) {
-        return Vector3D(x * k,
-                y * k,
-                z * k);
-    }
-
-    // Dot product
-    T operator *(Vector3D v) {
-        return x * v.x +
-                y * v.y +
-                z * v.z;
-    }
-
-    bool operator ==(Vector3D v) {
-        return x == v.x &&
-                y == v.y &&
-                z == v.z;
-    }
+    // Special Operations
+    void normalize();
 };
 
-#endif // GUARD
+#endif GUARD_vector_hh

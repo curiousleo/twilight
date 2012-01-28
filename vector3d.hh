@@ -1,6 +1,9 @@
 #ifndef GUARD_vector_hh
 #define GUARD_vector_hh
 
+#include <cmath>
+#include <iostream>
+
 struct Vector3D {
     // Properties
     double x, y, z;

@@ -7,8 +7,9 @@
 
 #include "vector3d.hh"
 
-#define G  6.67300e-11          // m^3 / (kg s^2)
-#define AU 1.49598e11           // m / AU
+#define G   6.67300e-11         // m^3 / (kg s^2)
+#define GAU 1.99300e-44         // AU^3 / (kg s^2)
+#define AU  1.49598e11          // m / AU
 
 struct Body {
     double mass,                // kg

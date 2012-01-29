@@ -54,10 +54,12 @@ Vector3D& Vector3D::operator-=(Vector3D w) {
 }
 
 // Special Operations
-void Vector3D::normalize() {
+Vector3D Vector3D::norm() const {
+    Vector3D v;
     double l = this->len();
-    if (l == 0) return;
-    x /= l; y /= l; z /= l;
+    if (l == 0) return v;
+    else
+	return Vector3D(x / l, y / l, z / l);
 }
 
 // Distances

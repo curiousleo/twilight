@@ -61,7 +61,7 @@ struct Vector3D {
     friend std::ostream& operator<<(std::ostream&, const Vector3D&);
 
     // Special Operations
-    void normalize();
+    Vector3D norm() const;
 };
 
 // Output stream

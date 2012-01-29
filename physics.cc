@@ -5,7 +5,8 @@ using namespace std;
 // Calculates the force acting on body 2
 Vector3D gravity(const Body& b1, const Body& b2) {
     Vector3D d = b1.r - b2.r;
-    return G * b1.mass * b2.mass * d / (pow(d.len(), 3) * AU * AU);
+    // Units: (AU^3 / (kg s^2)) * kg^2 / AU^2 = kg AU / s^2
+    return GAU * b1.mass * b2.mass * d.norm() / d.len2();
 }
 
 // Return updated state of the system
@@ -31,8 +32,8 @@ System System::step(double dt) const {
 
     for (it1 = s.bodies.begin(); it1 != s.bodies.end(); it1++) {
         // Euler integration
-        it1->r += it1->v * dt;
-        it1->v += it1->a * dt;
+        it1->r += 0.5 * it1->v * dt;
+        it1->v += 0.5 * it1->a * dt;
     }
     return s;
 }

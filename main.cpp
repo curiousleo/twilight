@@ -14,7 +14,7 @@ int main(void) {
         cin >> s;
     }
 
-    for (double t = 0; t < 70; t += dt) {
+    for (double t = 0; t < 360; t += dt) {
         if (s.pulse() && floor(t) != lasteclipse) {
 	    lasteclipse = floor(t);
 	    // cerr << t+dt << " ";

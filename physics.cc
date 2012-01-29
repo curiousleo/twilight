@@ -13,9 +13,8 @@ vector<Vector3D> System::rs() const {
     vector<Vector3D> rs;
     for (
 	    vector<Body>::const_iterator it = bodies.begin();
-	    it != bodies.end(); it++) {
+	    it != bodies.end(); it++)
 	rs.push_back(it->r);
-    }
     return rs;
 }
 
@@ -23,9 +22,8 @@ vector<Vector3D> System::vs() const {
     vector<Vector3D> vs;
     for (
 	    vector<Body>::const_iterator it = bodies.begin();
-	    it != bodies.end(); it++) {
+	    it != bodies.end(); it++)
 	vs.push_back(it->v);
-    }
     return vs;
 }
 
@@ -51,13 +49,12 @@ vector<Vector3D> System::as(
         b_it1->a = Vector3D();
 
         for (b_it2 = _bodies.begin(); b_it2 != _bodies.end(); b_it2++) {
-            // Only calculate gravb_ity force for distinct bodies
+            // Only calculate gravity force for distinct bodies
             if (b_it1 == b_it2) continue;
 
             // Force acting on body 2
             f2 = gravity(*b_it1, *b_it2);
-            b_it1->a += -f2 / b_it1->mass;
-            b_it2->a +=  f2 / b_it2->mass;
+            b_it1->a -= f2 / b_it1->mass;
         }
     }
     for (b_it1 = _bodies.begin(); b_it1 != _bodies.end(); b_it1++) {
@@ -133,7 +130,7 @@ bool System::pulse(void) {
 
     double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
     // return abs(costheta) > cos(0.01);
-    return (1 - abs(costheta)) < (1 - cos(0.005));
+    return (1 - abs(costheta)) < (1 - cos(0.00005));
 }
 
 // String formatter

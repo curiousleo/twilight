@@ -35,6 +35,8 @@ struct System {
     std::string str() const;
     std::string str(bool) const;
     
+    System step(double) const;
+
     // Input/Output stream
     friend std::istream& operator>>(std::istream&, System&);
     friend std::ostream& operator<<(std::ostream&, const System&);

@@ -8,17 +8,17 @@ Vector3D gravity(const Body& b1, const Body& b2) {
     return G * b1.mass * b2.mass * d / (pow(d.len(), 3) * AU * AU);
 }
 
-// Update positions
-bool System::pulse(void) {
+// Return updated state of the system
+System System::step(double dt) const {
+    System s = *this;
     vector<Body>::iterator it1, it2;
     Vector3D f2;
-    double theta;
 
-    for (it1 = bodies.begin(); it1 != bodies.end(); it1++) {
+    for (it1 = s.bodies.begin(); it1 != s.bodies.end(); it1++) {
         // Reset acceleration
         it1->a = Vector3D();
 
-        for (it2 = bodies.begin(); it2 != bodies.end(); it2++) {
+        for (it2 = s.bodies.begin(); it2 != s.bodies.end(); it2++) {
             // Only calculate gravity force for distinct bodies
             if (it1 == it2) continue;
 
@@ -29,10 +29,28 @@ bool System::pulse(void) {
         }
     }
 
-    for (it1 = bodies.begin(); it1 != bodies.end(); it1++) {
+    for (it1 = s.bodies.begin(); it1 != s.bodies.end(); it1++) {
         // Euler integration
         it1->r += it1->v * dt;
         it1->v += it1->a * dt;
+    }
+    return s;
+}
+
+// Update positions
+bool System::pulse(void) {
+    vector<Body>::size_type i;
+
+    System s1 = step(0);
+    System s2 = s1.step(dt/2);
+    System s3 = s2.step(dt/2);
+    System s4 = s3.step(dt);
+
+    // Update this System with the weightened average values for r, v, a
+    // for all the bodies from s1 to s4
+    for (i = 0; i != bodies.size(); i++) {
+	bodies[i].r += (dt/6) * (s1.bodies[i].r + 2 * (s2.bodies[i].r + s3.bodies[i].r) + s4.bodies[i].r);
+	bodies[i].v += (dt/6) * (s1.bodies[i].v + 2 * (s2.bodies[i].v + s3.bodies[i].v) + s4.bodies[i].v);
     }
 
     // Check alignment
@@ -55,8 +73,10 @@ string System::str(bool verbose) const {
     for (
             vector<Body>::const_iterator it = bodies.begin();
             it != bodies.end(); it++) {
-        os << it->r << " " << it->v << " " << it->a
-            << " " << it->mass << endl;
+        // os << it->r << " " << it->v << " " << it->a
+            // << " " << it->mass << endl;
+	// z-face
+        os << it->r.x << " " << it->r.y << " " << 1e7 << endl;
     }
     return os.str();
 }

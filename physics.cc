@@ -5,7 +5,7 @@ using namespace std;
 // Calculates the force acting on body 2
 Vector3D gravity(const Body& b1, const Body& b2) {
     Vector3D d = b1.r - b2.r;
-    return b1.mass * b2.mass * d / pow(d.len(), 3);
+    return G * b1.mass * b2.mass * d / (pow(d.len(), 3) * AU * AU);
 }
 
 // Update positions
@@ -36,9 +36,14 @@ bool System::pulse(void) {
     }
 
     // Check alignment
-    // theta = arg(bodies[2].r - bodies[0].r) - arg(bodies[1].r - bodies[0].r);
-    // return (1 - abs(cos(theta))) < (1 - cos(0.01));
-    return false;
+    // Assuming the order of celestial bodies in vector bodies is Moon,
+    // Earth, Sun
+    Vector3D SM = bodies[0].r - bodies[2].r; // Sun->Earth
+    Vector3D SE = bodies[1].r - bodies[2].r; // Sun->Moon
+
+    double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
+    // return abs(costheta) > cos(0.01);
+    return (1 - abs(costheta)) < (1 - cos(0.01));
 }
 
 // String formatter

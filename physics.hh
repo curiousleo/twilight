@@ -7,12 +7,15 @@
 
 #include "vector3d.hh"
 
-#define G  6.67300e-11 // m^3 / (kg s^2)
-#define AU 1.49598e11  // m / AU
+#define G  6.67300e-11          // m^3 / (kg s^2)
+#define AU 1.49598e11           // m / AU
 
 struct Body {
-    double mass, radius;
-    Vector3D r, v, a;
+    double mass,                // kg
+           radius;              // m
+    Vector3D r,                 // AU (vector)
+             v,                 // AU (vector)
+             a;                 // AU (vector)
     std::string name;
 
     Body(
@@ -23,7 +26,7 @@ struct Body {
 
 struct System {
     std::vector<Body> bodies;
-    double dt;
+    double dt;                  // time step
 
     System() {}
     System(std::vector<Body> b, double t) : bodies(b), dt(t) {}

@@ -60,6 +60,21 @@ void Vector3D::normalize() {
     x /= l; y /= l; z /= l;
 }
 
+// Distances
+double d(Vector3D P, Vector3D Q) {
+    double dx = P.x - Q.x;
+    double dy = P.y - Q.y;
+    double dz = P.z - Q.z;
+    return sqrt(dx*dx + dy*dy + dz*dz);
+}
+
+double d2(Vector3D P, Vector3D Q) {
+    double dx = P.x - Q.x;
+    double dy = P.y - Q.y;
+    double dz = P.z - Q.z;
+    return (dx*dx + dy*dy + dz*dz);
+}
+
 // Output stream
 std::ostream& operator<<(std::ostream& os, const Vector3D& w) {
     os << w.str();

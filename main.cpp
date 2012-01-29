@@ -1,3 +1,4 @@
+#include "vector3d.hh"
 #include "physics.hh"
 
 using namespace std;

@@ -28,7 +28,7 @@ struct System {
     std::vector<Body> bodies;
     double dt;                  // time step
 
-    System() {}
+    System(double t) : dt(t) {}
     System(std::vector<Body> b, double t) : bodies(b), dt(t) {}
 
     bool pulse(void);

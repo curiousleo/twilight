@@ -17,7 +17,7 @@ enum SolarEclipse {
 
 struct Body {
     double mass,                // kg
-           radius;              // m
+           radius;              // AU
     Vector3D r,                 // AU (vector)
              v,                 // AU / day (vector)
              a;                 // AU / day^2 (vector)
@@ -26,7 +26,7 @@ struct Body {
     Body(
             const Vector3D& _r, const Vector3D& _v,
             const double _m, const double _R, const std::string _n) :
-        r(_r), v(_v), mass(_m), radius(_R), name(_n) {}
+        r(_r), v(_v), mass(_m), radius(_R / AU), name(_n) {}
 };
 
 struct System {

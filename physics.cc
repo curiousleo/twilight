@@ -121,14 +121,6 @@ SolarEclipse System::pulse(void) {
 	bodies[j].r += (dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
 	bodies[j].v += (dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
     }
-
-    // Check alignment
-    // Assuming the order of celestial bodies in vector bodies is Moon,
-    // Earth, Sun
-    Vector3D SM = bodies[0].r - bodies[2].r; // Sun->Earth
-    Vector3D SE = bodies[1].r - bodies[2].r; // Sun->Moon
-
-    double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
     // return abs(costheta) > cos(0.01);
     // return (1 - abs(costheta)) < 9.336e-10;
     return eclipse();
@@ -136,7 +128,15 @@ SolarEclipse System::pulse(void) {
 
 // Check if we're having a solar eclipse
 SolarEclipse System::eclipse(void) {
-    return NoSolarEclipse;
+    // Check alignment
+    // Assuming the order of celestial bodies in vector bodies is Moon,
+    // Earth, Sun
+    Vector3D SM = bodies[0].r - bodies[2].r; // Sun->Moon
+    Vector3D SE = bodies[1].r - bodies[2].r; // Sun->Earth
+
+    double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
+    double eta   = asin(bodies[1].radius / SE.len());
+    return abs(costheta) > cos(eta) ? PartialSolarEclipse : NoSolarEclipse;
 }
 
 // String formatter

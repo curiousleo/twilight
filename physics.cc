@@ -64,7 +64,7 @@ vector<Vector3D> System::as(
 }
 
 // Update positions
-bool System::pulse(void) {
+SolarEclipse System::pulse(void) {
     /*
 	x1 = x
 	v1 = v
@@ -130,7 +130,13 @@ bool System::pulse(void) {
 
     double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
     // return abs(costheta) > cos(0.01);
-    return (1 - abs(costheta)) < 9.336e-10;
+    // return (1 - abs(costheta)) < 9.336e-10;
+    return eclipse();
+}
+
+// Check if we're having a solar eclipse
+SolarEclipse System::eclipse(void) {
+    return NoSolarEclipse;
 }
 
 // String formatter

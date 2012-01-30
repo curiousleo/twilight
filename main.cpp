@@ -5,7 +5,7 @@ using namespace std;
 
 int main(void) {
     unsigned int i;
-    double dt = 0.001;	// days
+    double dt = 0.001;  // days
     int lasteclipse = -1;
     System s(dt);
 
@@ -16,14 +16,14 @@ int main(void) {
 
     int w = 0;
     for (double t = 0; t < 2490; t += dt) {
-	if (s.pulse() != NoSolarEclipse && floor(t) != lasteclipse) {
-	    lasteclipse = floor(t);
-	    cerr << lasteclipse << " ";
-	}
-	if (w++ == 800) {
-	    cout << s;
-	    w = 0;
-	}
+        if (s.pulse() != NoSolarEclipse && floor(t) != lasteclipse) {
+            lasteclipse = floor(t);
+            cerr << lasteclipse << " ";
+        }
+        if (w++ == 800) {
+            cout << s;
+            w = 0;
+        }
     }
     cerr << endl;
     return 0;

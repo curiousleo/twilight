@@ -7,9 +7,9 @@
 
 #include "vector3d.hh"
 
-#define G	6.67384e-11     // m^3 / (kg s^2)
-#define GAUD	1.4880787e-34   // AU^3 / (kg day^2)
-#define AU	1.49598e11      // m / AU
+#define G       6.67384e-11     // m^3 / (kg s^2)
+#define GAUD    1.4880787e-34   // AU^3 / (kg day^2)
+#define AU      1.49598e11      // m / AU
 
 enum SolarEclipse {
     NoSolarEclipse, PartialSolarEclipse, TotalSolarEclipse
@@ -45,8 +45,8 @@ struct System {
     std::vector<Vector3D> rs(void) const;
     std::vector<Vector3D> vs(void) const;
     std::vector<Vector3D> as(
-	    const std::vector<Vector3D>&, const std::vector<Vector3D>&,
-	    double) const;
+        const std::vector<Vector3D>&, const std::vector<Vector3D>&,
+        double) const;
 
     // Input/Output stream
     friend std::istream& operator>>(std::istream&, System&);

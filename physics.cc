@@ -130,7 +130,7 @@ bool System::pulse(void) {
 
     double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
     // return abs(costheta) > cos(0.01);
-    return (1 - abs(costheta)) < (1 - cos(0.00005));
+    return (1 - abs(costheta)) < 9.336e-10;
 }
 
 // String formatter

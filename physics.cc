@@ -11,19 +11,13 @@ Vector3D gravity(const Body& b1, const Body& b2) {
 
 vector<Vector3D> System::rs() const {
     vector<Vector3D> rs;
-    for (
-        vector<Body>::const_iterator it = bodies.begin();
-        it != bodies.end(); it++)
-    rs.push_back(it->r);
+    for(const Body& body : bodies) { rs.push_back(body.r); }
     return rs;
 }
 
 vector<Vector3D> System::vs() const {
     vector<Vector3D> vs;
-    for (
-        vector<Body>::const_iterator it = bodies.begin();
-        it != bodies.end(); it++)
-    vs.push_back(it->v);
+    for(const Body& body : bodies) { rs.push_back(body.v); }
     return vs;
 }
 

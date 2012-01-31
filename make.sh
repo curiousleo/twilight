@@ -1,1 +1,1 @@
-g++ -O2 -o ex8 vector3d.cc physics.cc main.cpp
+g++ -std=c++0x -O2 -o ex8 vector3d.cc physics.cc main.cpp

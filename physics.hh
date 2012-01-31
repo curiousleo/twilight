@@ -1,6 +1,7 @@
 #ifndef GUARD_physic_hh
 #define GUARD_physic_hh
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <vector>

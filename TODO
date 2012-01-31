@@ -1,0 +1,30 @@
+To do
+=====
+
+Numerical integration
+---------------------
+
+- Move numerical integration to its own header & source file
+- Add Euler, other RK methods
+- Variable-degree RK? (Partial functions? Lambdas.)
+- Error-checking integration?
+
+Solar Eclipse Detection
+-----------------------
+
+- Check if d(Sun, Moon) < d(Sun, Earth): Confusing solar and lunar
+  eclipses right now
+- Maybe add counter to skip check if the time difference to the last
+  eclipse is too small
+- If dt is large, maybe Euler to check if eclipse between t and t+dt?
+- Do a rough constant angle based check if solar eclipse is possible at
+  all before doing more complex geometry based stuff (own header &
+  source file?)
+- Then, check if there is a solar eclipse and what type it is by
+  following the four tangents of both Sun and Moon
+- (Add lunar eclipse detection as well)
+
+General
+-------
+
+- Use range-based for loops, for_each, lambdas, enum classes

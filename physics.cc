@@ -17,7 +17,7 @@ vector<Vector3D> System::rs() const {
 
 vector<Vector3D> System::vs() const {
     vector<Vector3D> vs;
-    for(const Body& body : bodies) { rs.push_back(body.v); }
+    for(const Body& body : bodies) { vs.push_back(body.v); }
     return vs;
 }
 
@@ -58,7 +58,7 @@ vector<Vector3D> System::as(
 }
 
 // Update positions
-SolarEclipse System::pulse(void) {
+Eclipse System::pulse(void) {
     /*
     x1 = x
     v1 = v
@@ -121,7 +121,7 @@ SolarEclipse System::pulse(void) {
 }
 
 // Check if we're having a solar eclipse
-SolarEclipse System::eclipse(void) {
+Eclipse System::eclipse(void) {
     // Check alignment
     // Assuming the order of celestial bodies in vector bodies is Moon,
     // Earth, Sun
@@ -130,7 +130,8 @@ SolarEclipse System::eclipse(void) {
 
     double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
     double eta      = asin(bodies[1].radius / SE.len());
-    return abs(costheta) > cos(eta) ? PartialSolarEclipse : NoSolarEclipse;
+    return abs(costheta) > cos(eta) ?
+        Eclipse::SolarEclipse : Eclipse::NoEclipse;
 }
 
 // String formatter

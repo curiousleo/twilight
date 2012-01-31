@@ -16,7 +16,7 @@ int main(void) {
 
     int w = 0;
     for (double t = 0; t < 2490; t += dt) {
-        if (s.pulse() != NoSolarEclipse && floor(t) != lasteclipse) {
+        if (s.pulse() != Eclipse::NoEclipse && floor(t) != lasteclipse) {
             lasteclipse = floor(t);
             cerr << lasteclipse << " ";
         }

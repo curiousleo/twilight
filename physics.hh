@@ -12,8 +12,8 @@
 #define GAUD    1.4880787e-34   // AU^3 / (kg day^2)
 #define AU      1.49598e11      // m / AU
 
-enum SolarEclipse {
-    NoSolarEclipse, PartialSolarEclipse, TotalSolarEclipse
+enum class Eclipse {
+    NoEclipse, SolarEclipse, LunarEclipse
 };
 
 struct Body {
@@ -37,8 +37,8 @@ struct System {
     System(double t) : dt(t) {}
     System(std::vector<Body> b, double t) : bodies(b), dt(t) {}
 
-    SolarEclipse pulse(void);
-    SolarEclipse eclipse(void);
+    Eclipse pulse(void);
+    Eclipse eclipse(void);
 
     std::string str() const;
     std::string str(bool) const;

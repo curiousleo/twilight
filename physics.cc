@@ -3,8 +3,10 @@
 using namespace std;
 
 // Calculates the force acting on body 1
-Vector3D gravity(const Body& b1, const Body& b2) {
-    Vector3D d = b2.r - b1.r;
+Vector3D gravity(
+	const Body& b1, const Vector3D& r1,
+	const Body& b2, const Vector3D& r2) {
+    Vector3D d = r2 - r1;
     // Units: (AU^3 / (kg day^2)) * kg^2 / AU^2 = kg AU / day^2
     return GAUD * b1.mass * b2.mass * d.norm() / d.len2();
 }
@@ -45,7 +47,7 @@ vector<Vector3D> System::accls(const vector<Vector3D>& rs) const {
             if (b_it1 == b_it2) continue;
 
             // Force acting on body 1
-            f = gravity(*b_it1, *b_it2);
+            f = gravity(*b_it1, b_it1->r,  *b_it2, b_it2->r);
             b_it1->a += f / b_it1->mass;
         }
     }

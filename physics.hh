@@ -55,6 +55,7 @@ struct System {
 // Output stream
 std::ostream& operator<<(std::ostream&, const System&);
 
-Vector3D gravity(const Body&, const Body&);
+Vector3D gravity(
+	const Body&, const Vector3D&, const Body&, const Vector3D&);
 
 #endif // GUARD

@@ -45,9 +45,7 @@ struct System {
     
     std::vector<Vector3D> rs(void) const;
     std::vector<Vector3D> vs(void) const;
-    std::vector<Vector3D> as(
-        const std::vector<Vector3D>&, const std::vector<Vector3D>&,
-        double) const;
+    std::vector<Vector3D> accls(const std::vector<Vector3D>&) const;
 
     // Input/Output stream
     friend std::istream& operator>>(std::istream&, System&);

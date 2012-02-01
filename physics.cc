@@ -22,8 +22,7 @@ vector<Vector3D> System::vs() const {
 }
 
 // Return updated state of the system
-vector<Vector3D> System::as(
-    const vector<Vector3D>& rs, const vector<Vector3D>& vs, double dt) const {
+vector<Vector3D> System::accls(const vector<Vector3D>& rs) const {
     vector<Vector3D> as;
     vector<Body> _bodies = bodies;
     Vector3D f2;
@@ -32,11 +31,10 @@ vector<Vector3D> System::as(
     vector<Vector3D>::const_iterator r_it, v_it;
 
     for (
-        b_it1 = _bodies.begin(), r_it = rs.begin(), v_it = vs.begin();
-        b_it1 != _bodies.end() && r_it != rs.end() && v_it != vs.end();
-        b_it1++, r_it++, v_it++) {
+        b_it1 = _bodies.begin(), r_it = rs.begin();
+        b_it1 != _bodies.end() && r_it != rs.end();
+        b_it1++, r_it++) {
     b_it1->r = *r_it;
-    b_it1->v = *v_it;
     }
     for (b_it1 = _bodies.begin(); b_it1 != _bodies.end(); b_it1++) {
         // Reset acceleration
@@ -90,25 +88,25 @@ Eclipse System::pulse(void) {
 
     r1 = rs();
     v1 = vs();
-    a1 = as(r1, v1, 0);
+    a1 = accls(r1);
 
     for (j = 0; j != i; j++) {
         r2.push_back(r1[j] + v1[j] * 0.5 * dt);
         v2.push_back(v1[j] + a1[j] * 0.5 * dt);
     }
-    a2 = as(r2, v2, dt/2);
+    a2 = accls(r2);
 
     for (j = 0; j != i; j++) {
         r3.push_back(r1[j] + v2[j] * 0.5 * dt);
         v3.push_back(v1[j] + a2[j] * 0.5 * dt);
     }
-    a3 = as(r3, v3, dt/2);
+    a3 = accls(r3);
 
     for (j = 0; j != i; j++) {
         r4.push_back(r1[j] + v3[j] * dt);
         v4.push_back(v1[j] + a3[j] * dt);
     }
-    a4 = as(r4, v4, dt);
+    a4 = accls(r4);
 
     // Update this System with the weightened average values for r, v, a
     for (j = 0; j != i; j++) {
@@ -159,6 +157,7 @@ std::istream& operator>>(std::istream& is, System& s) {
     is >> name >> rx >> ry >> rz >> vx >> vy >> vz >> m >> R;
     s.bodies.push_back(Body(
                 Vector3D(rx, ry, rz), Vector3D(vx, vy, vz), m, R, name));
+    return is;
 }
 std::ostream& operator<<(std::ostream& os, const System& s) {
     os << s.str();

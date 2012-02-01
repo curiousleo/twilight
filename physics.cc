@@ -2,9 +2,9 @@
 
 using namespace std;
 
-// Calculates the force acting on body 2
+// Calculates the force acting on body 1
 Vector3D gravity(const Body& b1, const Body& b2) {
-    Vector3D d = b1.r - b2.r;
+    Vector3D d = b2.r - b1.r;
     // Units: (AU^3 / (kg day^2)) * kg^2 / AU^2 = kg AU / day^2
     return GAUD * b1.mass * b2.mass * d.norm() / d.len2();
 }
@@ -25,7 +25,7 @@ vector<Vector3D> System::vs() const {
 vector<Vector3D> System::accls(const vector<Vector3D>& rs) const {
     vector<Vector3D> as;
     vector<Body> _bodies = bodies;
-    Vector3D f2;
+    Vector3D f;
 
     vector<Body>::iterator b_it1, b_it2;
     vector<Vector3D>::const_iterator r_it, v_it;
@@ -44,9 +44,9 @@ vector<Vector3D> System::accls(const vector<Vector3D>& rs) const {
             // Only calculate gravity force for distinct bodies
             if (b_it1 == b_it2) continue;
 
-            // Force acting on body 2
-            f2 = gravity(*b_it1, *b_it2);
-            b_it1->a -= f2 / b_it1->mass;
+            // Force acting on body 1
+            f = gravity(*b_it1, *b_it2);
+            b_it1->a += f / b_it1->mass;
         }
     }
     for (b_it1 = _bodies.begin(); b_it1 != _bodies.end(); b_it1++) {

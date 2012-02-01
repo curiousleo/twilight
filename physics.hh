@@ -32,10 +32,13 @@ struct Body {
 
 struct System {
     std::vector<Body> bodies;
+    std::vector<Vector3D> _rs;   // AU
+    std::vector<Vector3D> _vs;   // AU / day
     double dt;                  // days (step time)
 
     System(double t) : dt(t) {}
-    System(std::vector<Body> b, double t) : bodies(b), dt(t) {}
+
+    void add_body(const Body&, const Vector3D&, const Vector3D&);
 
     Eclipse pulse(void);
     Eclipse eclipse(void);

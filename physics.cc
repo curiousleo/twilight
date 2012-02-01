@@ -134,6 +134,13 @@ Eclipse System::eclipse(void) {
         Eclipse::SolarEclipse : Eclipse::NoEclipse;
 }
 
+// Add a body to the system
+void System::add_body(const Body& body, const Vector3D& r, const Vector3D& v) {
+    bodies.push_back(body);
+    _rs.push_back(r);
+    _vs.push_back(v);
+}
+
 // String formatter
 string System::str(void) const { return str(false); }
 string System::str(bool verbose) const {
@@ -157,8 +164,9 @@ std::istream& operator>>(std::istream& is, System& s) {
     double rx, ry, rz, vx, vy, vz, m, R;
 
     is >> name >> rx >> ry >> rz >> vx >> vy >> vz >> m >> R;
-    s.bodies.push_back(Body(
-                Vector3D(rx, ry, rz), Vector3D(vx, vy, vz), m, R, name));
+    s.add_body(
+	    Body(Vector3D(rx, ry, rz), Vector3D(vx, vy, vz), m, R, name),
+	    Vector3D(rx, ry, rz), Vector3D(vx, vy, vz));
     return is;
 }
 std::ostream& operator<<(std::ostream& os, const System& s) {

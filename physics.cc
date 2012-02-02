@@ -12,7 +12,7 @@ inline Vector3D gravity(
 }
 
 // Return updated state of the system
-vector<Vector3D> System::accls(const vector<Vector3D>& tmp_rs) const {
+vector<Vector3D> System::gravitate(const vector<Vector3D>& tmp_rs) const {
     const vector<Body>::size_type n = bodies.size();
     vector<Body>::size_type i, j;
     vector<Vector3D> tmp_as(n);
@@ -58,7 +58,7 @@ Eclipse System::pulse(void) {
     const vector<Body>::size_type n = bodies.size();
     vector<Body>::size_type j;
 
-    vector<Vector3D> r1(rs), v1(vs), a1 = accls(r1),
+    vector<Vector3D> r1(rs), v1(vs), a1 = gravitate(r1),
                      r2, v2, a2,
                      r3, v3, a3,
                      r4, v4, a4;
@@ -68,20 +68,20 @@ Eclipse System::pulse(void) {
         v2.push_back(v1[j] + a1[j] * 0.5 * dt);
     }
 
-    a2 = accls(r2);
+    a2 = gravitate(r2);
 
     for (j = 0; j != n; j++) {
         r3.push_back(r1[j] + v2[j] * 0.5 * dt);
         v3.push_back(v1[j] + a2[j] * 0.5 * dt);
     }
 
-    a3 = accls(r3);
+    a3 = gravitate(r3);
     for (j = 0; j != n; j++) {
         r4.push_back(r1[j] + v3[j] * dt);
         v4.push_back(v1[j] + a3[j] * dt);
     }
 
-    a4 = accls(r4);
+    a4 = gravitate(r4);
 
     // Update this System with the weightened average values for r, v, a
     for (j = 0; j != n; j++) {

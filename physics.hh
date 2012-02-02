@@ -41,7 +41,7 @@ struct System {
     std::string str() const;
     std::string str(bool) const;
     
-    std::vector<Vector3D> accls(const std::vector<Vector3D>&) const;
+    std::vector<Vector3D> gravitate(const std::vector<Vector3D>&) const;
 
     // Input/Output stream
     friend std::istream& operator>>(std::istream&, System&);

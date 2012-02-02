@@ -1,5 +1,3 @@
-#include <functional>
-
 #include "numerics.hh"
 #include "physics.hh"
 
@@ -38,8 +36,7 @@ vector<Vector3D> System::gravitate(const vector<Vector3D>& tmp_rs) const {
 
 // Update positions
 Eclipse System::pulse(void) {
-    rk4(rs, vs, dt, gravitate);
-
+    rk4(this);
     return eclipse();
 }
 

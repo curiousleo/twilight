@@ -2,18 +2,14 @@
 
 using namespace std;
 
-void euler(
-	vector<Vector3D>& rs, vector<Vector3D>& vs, const double dt,
-	function<vector<Vector3D>()> a) {
+void euler(System* system) {
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
     return;
 }
 
-void rk4(
-	vector<Vector3D>& rs, vector<Vector3D>& vs, const double dt,
-	function<vector<Vector3D>()> a) {
+void rk4(System* system) {
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
@@ -39,38 +35,38 @@ void rk4(
     vf = v + (dt/6.0)*(a1 + 2*a2 + 2*a3 + a4)
     */
 
-    const vector<Vector3D>::size_type n = rs.size();
+    const vector<Vector3D>::size_type n = system->rs.size();
     vector<Vector3D>::size_type j;
 
-    vector<Vector3D> r1(rs), v1(vs), a1 = a(r1),
+    vector<Vector3D> r1(system->rs), v1(system->vs), a1 = system->gravitate(r1),
                      r2, v2, a2,
                      r3, v3, a3,
                      r4, v4, a4;
 
     for (j = 0; j != n; j++) {
-        r2.push_back(r1[j] + v1[j] * 0.5 * dt);
-        v2.push_back(v1[j] + a1[j] * 0.5 * dt);
+        r2.push_back(r1[j] + v1[j] * 0.5 * system->dt);
+        v2.push_back(v1[j] + a1[j] * 0.5 * system->dt);
     }
 
-    a2 = a(r2);
+    a2 = system->gravitate(r2);
 
     for (j = 0; j != n; j++) {
-        r3.push_back(r1[j] + v2[j] * 0.5 * dt);
-        v3.push_back(v1[j] + a2[j] * 0.5 * dt);
+        r3.push_back(r1[j] + v2[j] * 0.5 * system->dt);
+        v3.push_back(v1[j] + a2[j] * 0.5 * system->dt);
     }
 
-    a3 = a(r3);
+    a3 = system->gravitate(r3);
     for (j = 0; j != n; j++) {
-        r4.push_back(r1[j] + v3[j] * dt);
-        v4.push_back(v1[j] + a3[j] * dt);
+        r4.push_back(r1[j] + v3[j] * system->dt);
+        v4.push_back(v1[j] + a3[j] * system->dt);
     }
 
-    a4 = a(r4);
+    a4 = system->gravitate(r4);
 
     // Update this System with the weightened average values for r, v, a
     for (j = 0; j != n; j++) {
-        rs[j] += (dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
-        vs[j] += (dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
+        system->rs[j] += (system->dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
+        system->vs[j] += (system->dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
     }
 
     return;

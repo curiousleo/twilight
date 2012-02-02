@@ -1,5 +1,5 @@
-#ifndef GUARD_physic_hh
-#define GUARD_physic_hh
+#ifndef GUARD_physics_hh
+#define GUARD_physics_hh
 
 #include <algorithm>
 #include <iostream>

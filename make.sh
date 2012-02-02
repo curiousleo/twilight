@@ -1,1 +1,3 @@
-g++ -Wall -std=c++0x -O2 -o twilight vector3d.cc physics.cc numerics.cc main.cc
+g++ \
+    -Wall -I /usr/include/eigen3 -std=c++0x -O3 -o twilight \
+    physics.cc numerics.cc main.cc

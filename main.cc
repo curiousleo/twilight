@@ -1,7 +1,9 @@
-#include "vector3d.hh"
 #include "physics.hh"
 
+#include <Eigen/Dense>
+
 using namespace std;
+using namespace Eigen;
 
 int main(void) {
     unsigned int i;

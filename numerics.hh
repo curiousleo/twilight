@@ -6,7 +6,11 @@
 
 #include "vector3d.hh"
 
-void euler(Vector3D&, Vector3D&, std::function<std::vector<Vector3D> >);
-void rk4(Vector3D&, Vector3D&, std::function<std::vector<Vector3D> >);
+void euler(
+	std::vector<Vector3D>&, std::vector<Vector3D>&, const double,
+	std::function<std::vector<Vector3D>()>);
+void rk4(
+	std::vector<Vector3D>&, std::vector<Vector3D>&, const double,
+	std::function<std::vector<Vector3D>()>);
 
 #endif // GUARD

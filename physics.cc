@@ -1,3 +1,6 @@
+#include <functional>
+
+#include "numerics.hh"
 #include "physics.hh"
 
 using namespace std;
@@ -35,59 +38,7 @@ vector<Vector3D> System::gravitate(const vector<Vector3D>& tmp_rs) const {
 
 // Update positions
 Eclipse System::pulse(void) {
-    /*
-    x1 = x
-    v1 = v
-    a1 = a(x1, v1, 0)
-
-    x2 = x + 0.5*v1*dt
-    v2 = v + 0.5*a1*dt
-    a2 = a(x2, v2, dt/2.0)
-
-    x3 = x + 0.5*v2*dt
-    v3 = v + 0.5*a2*dt
-    a3 = a(x3, v3, dt/2.0)
-
-    x4 = x + v3*dt
-    v4 = v + a3*dt
-    a4 = a(x4, v4, dt)
-
-    xf = x + (dt/6.0)*(v1 + 2*v2 + 2*v3 + v4)
-    vf = v + (dt/6.0)*(a1 + 2*a2 + 2*a3 + a4)
-    */
-    const vector<Body>::size_type n = bodies.size();
-    vector<Body>::size_type j;
-
-    vector<Vector3D> r1(rs), v1(vs), a1 = gravitate(r1),
-                     r2, v2, a2,
-                     r3, v3, a3,
-                     r4, v4, a4;
-
-    for (j = 0; j != n; j++) {
-        r2.push_back(r1[j] + v1[j] * 0.5 * dt);
-        v2.push_back(v1[j] + a1[j] * 0.5 * dt);
-    }
-
-    a2 = gravitate(r2);
-
-    for (j = 0; j != n; j++) {
-        r3.push_back(r1[j] + v2[j] * 0.5 * dt);
-        v3.push_back(v1[j] + a2[j] * 0.5 * dt);
-    }
-
-    a3 = gravitate(r3);
-    for (j = 0; j != n; j++) {
-        r4.push_back(r1[j] + v3[j] * dt);
-        v4.push_back(v1[j] + a3[j] * dt);
-    }
-
-    a4 = gravitate(r4);
-
-    // Update this System with the weightened average values for r, v, a
-    for (j = 0; j != n; j++) {
-        rs[j] += (dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
-        vs[j] += (dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
-    }
+    rk4(rs, vs, dt, gravitate);
 
     return eclipse();
 }

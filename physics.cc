@@ -11,50 +11,35 @@ Vector3D gravity(
     return GAUD * b1.mass * b2.mass * d.norm() / d.len2();
 }
 
-vector<Vector3D> System::rs() const {
-    vector<Vector3D> rs;
-    for(const Body& body : bodies) { rs.push_back(body.r); }
-    return rs;
-}
-
-vector<Vector3D> System::vs() const {
-    vector<Vector3D> vs;
-    for(const Body& body : bodies) { vs.push_back(body.v); }
-    return vs;
-}
-
 // Return updated state of the system
-vector<Vector3D> System::accls(const vector<Vector3D>& rs) const {
-    vector<Vector3D> as;
-    vector<Body> _bodies = bodies;
-    Vector3D f;
+vector<Vector3D> System::accls(const vector<Vector3D>& tmp_rs) const {
+    vector<Vector3D> tmp_as;
+    Vector3D a, f;
+    int i = 0, j = 0;
 
-    vector<Body>::iterator b_it1, b_it2;
-    vector<Vector3D>::const_iterator r_it, v_it;
+    vector<Body>::const_iterator b_it1, b_it2;
 
-    for (
-        b_it1 = _bodies.begin(), r_it = rs.begin();
-        b_it1 != _bodies.end() && r_it != rs.end();
-        b_it1++, r_it++) {
-    b_it1->r = *r_it;
-    }
-    for (b_it1 = _bodies.begin(); b_it1 != _bodies.end(); b_it1++) {
+    for (b_it1 = bodies.begin(); b_it1 != bodies.end(); b_it1++) {
         // Reset acceleration
-        b_it1->a = Vector3D();
+	a = Vector3D();
 
-        for (b_it2 = _bodies.begin(); b_it2 != _bodies.end(); b_it2++) {
+        for (b_it2 = bodies.begin(); b_it2 != bodies.end(); b_it2++) {
             // Only calculate gravity force for distinct bodies
-            if (b_it1 == b_it2) continue;
+            if (b_it1 == b_it2) {
+		++j;
+		continue;
+	    }
 
             // Force acting on body 1
-            f = gravity(*b_it1, b_it1->r,  *b_it2, b_it2->r);
-            b_it1->a += f / b_it1->mass;
+            f = gravity(*b_it1, tmp_rs[i], *b_it2, tmp_rs[j]);
+            a += f / b_it1->mass;
+
+	    ++j;
         }
+	tmp_as.push_back(a);
+	++i;
     }
-    for (b_it1 = _bodies.begin(); b_it1 != _bodies.end(); b_it1++) {
-    as.push_back(b_it1->a);
-    }
-    return as;
+    return tmp_as;
 }
 
 // Update positions
@@ -82,14 +67,13 @@ Eclipse System::pulse(void) {
     const vector<Body>::size_type i = bodies.size();
     vector<Body>::size_type j;
 
-    vector<Vector3D> r1, v1, a1,
+    vector<Vector3D> r1(rs), v1(vs), a1,
                      r2, v2, a2,
                      r3, v3, a3,
                      r4, v4, a4;
-    vector<Vector3D>::iterator r_it, v_it, a_it;
 
-    r1 = rs();
-    v1 = vs();
+    static long long k = 0;
+    // if (k == 0) cerr << rs[0] << rs[1] << rs[2];
     a1 = accls(r1);
 
     for (j = 0; j != i; j++) {
@@ -112,11 +96,12 @@ Eclipse System::pulse(void) {
 
     // Update this System with the weightened average values for r, v, a
     for (j = 0; j != i; j++) {
-        bodies[j].r += (dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
-        bodies[j].v += (dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
+        rs[j] += (dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
+        vs[j] += (dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
     }
     // return abs(costheta) > cos(0.01);
     // return (1 - abs(costheta)) < 9.336e-10;
+    k++;
     return eclipse();
 }
 
@@ -125,8 +110,8 @@ Eclipse System::eclipse(void) {
     // Check alignment
     // Assuming the order of celestial bodies in vector bodies is Moon,
     // Earth, Sun
-    Vector3D SM = bodies[0].r - bodies[2].r; // Sun->Moon
-    Vector3D SE = bodies[1].r - bodies[2].r; // Sun->Earth
+    Vector3D SM = rs[0] - rs[2]; // Sun->Moon
+    Vector3D SE = rs[1] - rs[2]; // Sun->Earth
 
     double costheta = SM * SE / sqrt(SM.len2() * SE.len2());
     double eta      = asin(bodies[1].radius / SE.len());
@@ -137,23 +122,19 @@ Eclipse System::eclipse(void) {
 // Add a body to the system
 void System::add_body(const Body& body, const Vector3D& r, const Vector3D& v) {
     bodies.push_back(body);
-    _rs.push_back(r);
-    _vs.push_back(v);
+    rs.push_back(r);
+    vs.push_back(v);
 }
 
 // String formatter
 string System::str(void) const { return str(false); }
 string System::str(bool verbose) const {
     ostringstream os;
-    os << bodies.size() << endl;
+    vector<Body>::size_type n = bodies.size(), i;
+    os << n << endl;
 
-    for (
-            vector<Body>::const_iterator it = bodies.begin();
-            it != bodies.end(); it++) {
-        // os << it->r << " " << it->v << " " << it->a
-            // << " " << it->mass << endl;
-    // z-face
-        os << it->r.x << " " << it->r.y << " " << 1 << endl;
+    for (i = 0; i != n; ++i) {
+        os << rs[i].x << " " << rs[i].y << " " << 1 << endl;
     }
     return os.str();
 }
@@ -165,7 +146,7 @@ std::istream& operator>>(std::istream& is, System& s) {
 
     is >> name >> rx >> ry >> rz >> vx >> vy >> vz >> m >> R;
     s.add_body(
-	    Body(Vector3D(rx, ry, rz), Vector3D(vx, vy, vz), m, R, name),
+	    Body(m, R, name),
 	    Vector3D(rx, ry, rz), Vector3D(vx, vy, vz));
     return is;
 }

@@ -19,21 +19,16 @@ enum class Eclipse {
 struct Body {
     double mass,                // kg
            radius;              // AU
-    Vector3D r,                 // AU (vector)
-             v,                 // AU / day (vector)
-             a;                 // AU / day^2 (vector)
     std::string name;
 
-    Body(
-            const Vector3D& _r, const Vector3D& _v,
-            const double _m, const double _R, const std::string _n) :
-        r(_r), v(_v), mass(_m), radius(_R / AU), name(_n) {}
+    Body(const double _m, const double _R, const std::string _n) :
+        mass(_m), radius(_R / AU), name(_n) {}
 };
 
 struct System {
     std::vector<Body> bodies;
-    std::vector<Vector3D> _rs;   // AU
-    std::vector<Vector3D> _vs;   // AU / day
+    std::vector<Vector3D> rs;   // AU
+    std::vector<Vector3D> vs;   // AU / day
     double dt;                  // days (step time)
 
     System(double t) : dt(t) {}
@@ -46,8 +41,6 @@ struct System {
     std::string str() const;
     std::string str(bool) const;
     
-    std::vector<Vector3D> rs(void) const;
-    std::vector<Vector3D> vs(void) const;
     std::vector<Vector3D> accls(const std::vector<Vector3D>&) const;
 
     // Input/Output stream

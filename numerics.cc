@@ -6,6 +6,16 @@ void euler(System* system) {
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
+    const vector<Vector3D>::size_type n = system->rs.size();
+    vector<Vector3D>::size_type j;
+
+    vector<Vector3D> as = system->gravitate(system->rs);
+
+    for (j = 0; j != n; j++) {
+        system->rs[j] += system->vs[j] * system->dt;
+        system->vs[j] += as[j] * system->dt;
+    }
+
     return;
 }
 

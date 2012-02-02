@@ -3,7 +3,7 @@
 using namespace std;
 
 // Calculates the force acting on body 1
-Vector3D gravity(
+inline Vector3D gravity(
         const Body& b1, const Vector3D& r1,
         const Body& b2, const Vector3D& r2) {
     Vector3D d = r2 - r1;

@@ -5,11 +5,11 @@
 #include <sstream>
 #include <vector>
 
-#include "vector3d.hh"
+#include <Eigen/Dense>
 
-#define G       6.67384e-11     // m^3 / (kg s^2)
-#define GAUD    1.4880787e-34   // AU^3 / (kg day^2)
-#define AU      1.49598e11      // m / AU
+#define G       6.67384e-11d    // m^3 / (kg s^2)
+#define GAUD    1.4880787e-34d  // AU^3 / (kg day^2)
+#define AU      1.49598e11d     // m / AU
 
 enum class Eclipse {
     NoEclipse, SolarEclipse, LunarEclipse
@@ -26,13 +26,13 @@ struct Body {
 
 struct System {
     std::vector<Body> bodies;
-    std::vector<Vector3D> rs;   // AU
-    std::vector<Vector3D> vs;   // AU / day
+    std::vector<Eigen::Vector3d> rs;   // AU
+    std::vector<Eigen::Vector3d> vs;   // AU / day
     double dt;                  // days (step time)
 
     System(double t) : dt(t) {}
 
-    void add_body(const Body&, const Vector3D&, const Vector3D&);
+    void add_body(const Body, const Eigen::Vector3d, const Eigen::Vector3d);
 
     Eclipse pulse(void);
     Eclipse eclipse(void);
@@ -40,7 +40,7 @@ struct System {
     std::string str() const;
     std::string str(bool) const;
     
-    std::vector<Vector3D> gravitate(const std::vector<Vector3D>&) const;
+    std::vector<Eigen::Vector3d> gravitate(const std::vector<Eigen::Vector3d>&) const;
 
     // Input/Output stream
     friend std::istream& operator>>(std::istream&, System&);
@@ -50,7 +50,7 @@ struct System {
 // Output stream
 std::ostream& operator<<(std::ostream&, const System&);
 
-Vector3D gravity(
-	const Body&, const Vector3D&, const Body&, const Vector3D&);
+Eigen::Vector3d gravity(
+	const Body&, const Eigen::Vector3d&, const Body&, const Eigen::Vector3d&);
 
 #endif // GUARD

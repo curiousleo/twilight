@@ -1,15 +1,16 @@
 #include "numerics.hh"
 
 using namespace std;
+using namespace Eigen;
 
 void euler(System* system) {
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
-    const vector<Vector3D>::size_type n = system->rs.size();
-    vector<Vector3D>::size_type j;
+    const vector<Vector3d>::size_type n = system->rs.size();
+    vector<Vector3d>::size_type j;
 
-    vector<Vector3D> as = system->gravitate(system->rs);
+    vector<Vector3d> as = system->gravitate(system->rs);
 
     for (j = 0; j != n; j++) {
         system->rs[j] += system->vs[j] * system->dt;
@@ -45,13 +46,17 @@ void rk4(System* system) {
     vf = v + (dt/6.0)*(a1 + 2*a2 + 2*a3 + a4)
     */
 
-    const vector<Vector3D>::size_type n = system->rs.size();
-    vector<Vector3D>::size_type j;
+    const vector<Vector3d>::size_type n = system->rs.size();
+    vector<Vector3d>::size_type j;
 
-    vector<Vector3D> r1(system->rs), v1(system->vs), a1 = system->gravitate(r1),
+    vector<Vector3d> r1, v1, a1,
                      r2, v2, a2,
                      r3, v3, a3,
                      r4, v4, a4;
+
+    r1 = system->rs;
+    v1 = system->vs;
+    a1 = system->gravitate(r1);
 
     for (j = 0; j != n; j++) {
         r2.push_back(r1[j] + v1[j] * 0.5 * system->dt);

@@ -20,10 +20,11 @@ inline Vector3d gravity(
 }
 
 // Return updated state of the system
-vector<Vector3d> System::gravitate(const vector<Vector3d>& tmp_rs) const {
+Array3Xd System::gravitate(const Array3Xd& tmp_rs) const {
     const vector<Body>::size_type n = bodies.size();
     vector<Body>::size_type i, j;
-    vector<Vector3d> tmp_as(n);
+    Array3Xd as_tmp;
+    as_tmp.resize(NoChange, rs.matrix().rows());
     Vector3d f;
 
     for (i = 0; i != (n - 1); ++i) {
@@ -33,12 +34,12 @@ vector<Vector3d> System::gravitate(const vector<Vector3d>& tmp_rs) const {
             Body b2 = bodies[j];
 
             // Force acting on body 1
-            f = gravity(b1, tmp_rs[i], b2, tmp_rs[j]);
-            tmp_as[i] += f / b1.mass;
-            tmp_as[j] -= f / b2.mass;
+            f = gravity(b1, tmp_rs.col(i), b2, tmp_rs.col(j));
+            as_tmp.col(i) += f.array() / b1.mass;
+            as_tmp.col(j) -= f.array() / b2.mass;
         }
     }
-    return tmp_as;
+    return as_tmp;
 }
 
 // Update positions
@@ -52,8 +53,8 @@ Eclipse System::eclipse(void) {
     // Check alignment
     // Assuming the order of celestial bodies in vector bodies is Moon,
     // Earth, Sun
-    Vector3d SM = rs[0] - rs[2]; // Sun->Moon
-    Vector3d SE = rs[1] - rs[2]; // Sun->Earth
+    Vector3d SM = rs.col(0) - rs.col(2); // Sun->Moon
+    Vector3d SE = rs.col(1) - rs.col(2); // Sun->Earth
 
     double costheta = SM.dot(SE) / sqrt(SM.squaredNorm() * SE.squaredNorm());
     double eta      = asin(bodies[1].radius / SE.norm());
@@ -65,8 +66,12 @@ Eclipse System::eclipse(void) {
 void System::add_body(
         const Body body, const Vector3d r, const Vector3d v) {
     bodies.push_back(body);
-    rs.push_back(r);
-    vs.push_back(v);
+
+    rs.conservativeResize(NoChange, rs.cols() + 1);
+    rs.rightCols<1>() = r;
+
+    vs.conservativeResize(NoChange, vs.cols() + 1);
+    vs.rightCols<1>() = v;
 }
 
 // String formatter
@@ -77,7 +82,7 @@ string System::str(bool verbose) const {
     os << n << endl;
 
     for(i = 0; i != n; ++i)
-        os << rs[i][0] << " " << rs[i][1] << " "
+        os << rs.row(i).col(0) << " " << rs.row(i).col(1) << " "
             << 1 /* bodies[i].mass */ << endl;
     return os.str();
 }

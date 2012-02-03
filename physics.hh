@@ -26,8 +26,8 @@ struct Body {
 
 struct System {
     std::vector<Body> bodies;
-    std::vector<Eigen::Vector3d> rs;   // AU
-    std::vector<Eigen::Vector3d> vs;   // AU / day
+    Eigen::Array3Xd rs;         // AU
+    Eigen::Array3Xd vs;         // AU / day
     double dt;                  // days (step time)
 
     System(double t) : dt(t) {}
@@ -40,7 +40,7 @@ struct System {
     std::string str() const;
     std::string str(bool) const;
     
-    std::vector<Eigen::Vector3d> gravitate(const std::vector<Eigen::Vector3d>&) const;
+    Eigen::Array3Xd gravitate(const Eigen::Array3Xd&) const;
 
     // Input/Output stream
     friend std::istream& operator>>(std::istream&, System&);
@@ -51,6 +51,7 @@ struct System {
 std::ostream& operator<<(std::ostream&, const System&);
 
 Eigen::Vector3d gravity(
-	const Body&, const Eigen::Vector3d&, const Body&, const Eigen::Vector3d&);
+        const Body&, const Eigen::Vector3d&,
+        const Body&, const Eigen::Vector3d&);
 
 #endif // GUARD

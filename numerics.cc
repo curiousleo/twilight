@@ -7,15 +7,10 @@ void euler(System* system) {
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
-    const vector<Vector3d>::size_type n = system->rs.size();
-    vector<Vector3d>::size_type j;
+    Array3Xd as_tmp = system->gravitate(system->rs);
 
-    vector<Vector3d> as = system->gravitate(system->rs);
-
-    for (j = 0; j != n; j++) {
-        system->rs[j] += system->vs[j] * system->dt;
-        system->vs[j] += as[j] * system->dt;
-    }
+    system->rs += system->vs * system->dt;
+    system->vs += as_tmp * system->dt;
 
     return;
 }
@@ -45,44 +40,25 @@ void rk4(System* system) {
     xf = x + (dt/6.0)*(v1 + 2*v2 + 2*v3 + v4)
     vf = v + (dt/6.0)*(a1 + 2*a2 + 2*a3 + a4)
     */
+    Array3Xd r1 = system->rs;
+    Array3Xd v1 = system->vs;
+    Array3Xd a1 = system->gravitate(r1);
 
-    const vector<Vector3d>::size_type n = system->rs.size();
-    vector<Vector3d>::size_type j;
+    Array3Xd r2 = r1 + v1 * 0.5 * system->dt;
+    Array3Xd v2 = v1 + a1 * 0.5 * system->dt;
+    Array3Xd a2 = system->gravitate(r2);
 
-    vector<Vector3d> r1, v1, a1,
-                     r2, v2, a2,
-                     r3, v3, a3,
-                     r4, v4, a4;
+    Array3Xd r3 = r1 + v2 * 0.5 * system->dt;
+    Array3Xd v3 = v1 + a2 * 0.5 * system->dt;
+    Array3Xd a3 = system->gravitate(r3);
 
-    r1 = system->rs;
-    v1 = system->vs;
-    a1 = system->gravitate(r1);
-
-    for (j = 0; j != n; j++) {
-        r2.push_back(r1[j] + v1[j] * 0.5 * system->dt);
-        v2.push_back(v1[j] + a1[j] * 0.5 * system->dt);
-    }
-
-    a2 = system->gravitate(r2);
-
-    for (j = 0; j != n; j++) {
-        r3.push_back(r1[j] + v2[j] * 0.5 * system->dt);
-        v3.push_back(v1[j] + a2[j] * 0.5 * system->dt);
-    }
-
-    a3 = system->gravitate(r3);
-    for (j = 0; j != n; j++) {
-        r4.push_back(r1[j] + v3[j] * system->dt);
-        v4.push_back(v1[j] + a3[j] * system->dt);
-    }
-
-    a4 = system->gravitate(r4);
+    Array3Xd r4 = r1 + v3 * system->dt;
+    Array3Xd v4 = v1 + a3 * system->dt;
+    Array3Xd a4 = system->gravitate(r4);
 
     // Update this System with the weightened average values for r, v, a
-    for (j = 0; j != n; j++) {
-        system->rs[j] += (system->dt/6) * (v1[j] + 2 * (v2[j] + v3[j]) + v4[j]);
-        system->vs[j] += (system->dt/6) * (a1[j] + 2 * (a2[j] + a3[j]) + a4[j]);
-    }
+    system->rs += (system->dt/6) * (v1 + 2 * (v2 + v3) + v4);
+    system->vs += (system->dt/6) * (a1 + 2 * (a2 + a3) + a4);
 
     return;
 }

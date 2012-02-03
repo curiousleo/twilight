@@ -25,6 +25,7 @@ Array3Xd System::gravitate(const Array3Xd& tmp_rs) const {
     vector<Body>::size_type i, j;
     Array3Xd as_tmp;
     as_tmp.resize(NoChange, rs.matrix().rows());
+    as_tmp.setZero();
     Vector3d f;
 
     for (i = 0; i != (n - 1); ++i) {
@@ -82,7 +83,7 @@ string System::str(bool verbose) const {
     os << n << endl;
 
     for(i = 0; i != n; ++i)
-        os << rs.row(i).col(0) << " " << rs.row(i).col(1) << " "
+        os << rs.col(i).row(0) << " " << rs.col(i).row(1) << " "
             << 1 /* bodies[i].mass */ << endl;
     return os.str();
 }

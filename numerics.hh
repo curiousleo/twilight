@@ -4,6 +4,7 @@
 #include "physics.hh"
 
 void euler(System*);
+void heun(System*);
 void rk4(System*);
 
 #endif // GUARD

@@ -6,5 +6,6 @@
 void euler(System*);
 void heun(System*);
 void rk4(System*);
+void rkf(System*);
 
 #endif // GUARD

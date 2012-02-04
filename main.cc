@@ -9,22 +9,20 @@ namespace po = boost::program_options;
 int cmdopts(int ac, char* av[], unsigned int& days, IntegrationMethod& method, double& dt) {
     po::options_description desc("Allowed options");
     desc.add_options()
-	// ("help", "produce help message")
+	("help", "produce help message")
 	("days,n", po::value<unsigned int>(&days)->default_value(2400), "time step (in days)")
-	("dt,d", po::value<double>(&dt)->default_value(0.005), "time step (in days)")
-	("method,m", po::value<string>()->default_value("rkf"), "integration method")
+	("dt,d", po::value<double>(&dt)->default_value(0.004, "0.004"), "time step (in days)")
+	("method,m", po::value<string>()->default_value("rkf"), "integration method: 'euler', 'heun', 'rk4', or 'rkf'")
     ;
 
     po::variables_map vm;
     po::store(po::parse_command_line(ac, av, desc), vm);
     po::notify(vm);
 
-    /*
     if (vm.count("help")) {
-	cerr << desc << "\n";
-	return 1;
+	cerr << desc << endl;
+	exit(1);
     }
-    */
 
     if (vm.count("dt"))
 	dt = vm["dt"].as<double>();

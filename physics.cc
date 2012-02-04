@@ -59,8 +59,10 @@ Eclipse System::eclipse(void) {
 
     double costheta = SM.dot(SE) / sqrt(SM.squaredNorm() * SE.squaredNorm());
     double eta      = asin(bodies[1].radius / SE.norm());
-    return abs(costheta) > cos(eta) ?
-        Eclipse::SolarEclipse : Eclipse::NoEclipse;
+    // double eta = 0.00006;
+    return abs(costheta) < cos(eta) ?
+        Eclipse::NoEclipse : SM.squaredNorm() < SE.squaredNorm() ?
+	    Eclipse::SolarEclipse : Eclipse::LunarEclipse;
 }
 
 // Add a body

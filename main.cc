@@ -1,10 +1,7 @@
 #include "physics.hh"
 #include "date.hh"
 
-#include <Eigen/Dense>
-
 using namespace std;
-using namespace Eigen;
 
 int main(void) {
     unsigned int i;

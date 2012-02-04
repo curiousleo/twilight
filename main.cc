@@ -8,9 +8,9 @@ using namespace Eigen;
 
 int main(void) {
     unsigned int i;
-    double dt = 0.001;  // days
+    double dt = 0.005;  // days
     int lasteclipse = -1;
-    System s(dt);
+    System s(IntegrationMethod::RK4, dt);
     Date d(2008, 1, 7);
     Eclipse eclipse;
 

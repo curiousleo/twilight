@@ -45,7 +45,12 @@ Array3Xd System::gravitate(const Array3Xd& tmp_rs) const {
 
 // Update positions
 Eclipse System::pulse(void) {
-    rk4(this);
+    switch (method) {
+	case IntegrationMethod::Euler: euler(this); break;
+	case IntegrationMethod::Heun:  heun(this); break;
+	case IntegrationMethod::RK4:   rk4(this); break;
+	case IntegrationMethod::RKF:   rkf(this); break;
+    }
     return eclipse();
 }
 

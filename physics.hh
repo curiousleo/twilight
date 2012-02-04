@@ -15,6 +15,10 @@ enum class Eclipse {
     None, Solar, Lunar
 };
 
+enum class IntegrationMethod {
+    Euler, Heun, RK4, RKF
+};
+
 struct Body {
     double mass,                // kg
            radius;              // AU
@@ -28,9 +32,11 @@ struct System {
     std::vector<Body> bodies;
     Eigen::Array3Xd rs;         // AU
     Eigen::Array3Xd vs;         // AU / day
+
+    IntegrationMethod method;
     double dt;                  // days (step time)
 
-    System(double t) : dt(t) {}
+    System(IntegrationMethod m, double t) : method(m), dt(t) {}
 
     void add_body(const Body, const Eigen::Vector3d, const Eigen::Vector3d);
 

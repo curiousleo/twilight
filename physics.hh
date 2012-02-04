@@ -12,7 +12,7 @@
 #define AU      1.49598e11d     // m / AU
 
 enum class Eclipse {
-    NoEclipse, SolarEclipse, LunarEclipse
+    None, Solar, Lunar
 };
 
 struct Body {

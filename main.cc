@@ -22,10 +22,10 @@ int main(void) {
     int w = 0;
     for (double t = 0; t < 2490; t += dt) {
 	eclipse = s.pulse();
-        if (eclipse != Eclipse::NoEclipse && floor(t) != lasteclipse) {
+        if (eclipse != Eclipse::None && floor(t) != lasteclipse) {
             lasteclipse = floor(t);
             cerr << d + lasteclipse << ",";
-	    if (eclipse == Eclipse::LunarEclipse)
+	    if (eclipse == Eclipse::Lunar)
 		cerr << "Lunar" << endl;
 	    else
 		cerr << "Solar" << endl;

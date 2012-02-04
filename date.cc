@@ -35,7 +35,7 @@ bool Date::valid() const {
         return (day <= DAYS[month-1]);
 }
 
-// String representation of our Date, used by operator <<
+// String representation of Date, used by operator <<
 string Date::str() const {
     ostringstream s;
     int w = s.width(2);
@@ -46,18 +46,30 @@ string Date::str() const {
     return s.str();
 }
 
-// Equality test operator -- needed for hacky valid & validate functions
 bool Date::operator==(Date _date) const {
     return (year == _date.year && month == _date.month && day == _date.day);
 }
 
-// Plus operator -- this is actually helpful.
-// Adds integer 'days' given in argument (call by value) to the date.
 Date Date::operator+(int days) const {
-    Date date = *this;
-    // ? : magic using the valid() function
-    for (int i = 0; i != days; ++i) date++;
-    return date;
+    Date d = *this;
+    int mdays;
+
+    while (days != 0) {
+	mdays = monthdays(d.year, d.month);
+
+	if (d.day + days > mdays) {
+	    if (d.month == 12) { ++d.year; d.month = 1; }
+	    else { ++d.month; }
+	    days -= mdays;
+	}
+
+	else {
+	    d.day += days;
+	    break;
+	}
+    }
+
+    return d;
 }
 
 // Unary Date += int operator: Just translate to +.

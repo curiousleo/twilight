@@ -19,12 +19,6 @@ Solar Eclipse Detection
 - Then, check if there is a solar eclipse and what type it is by
   following the four tangents of both Sun and Moon
 
-General
--------
-
-- Use range-based for loops, for_each, lambdas, enum classes
-- Command-line arguments for dt, integration method, …
-
 Done
 ----
 
@@ -33,3 +27,5 @@ Done
 - Check if d(Sun, Moon) < d(Sun, Earth): Confusing solar and lunar
   eclipses right now
 - (Add lunar eclipse detection as well)
+- Command-line arguments for dt, integration method, …
+- Use range-based for loops, for_each, lambdas, enum classes

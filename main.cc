@@ -1,9 +1,12 @@
+#include <boost/program_options.hpp>
+
 #include "physics.hh"
 #include "date.hh"
 
 using namespace std;
+namespace po = boost::program_options;
 
-int main(void) {
+int main(int ac, char* av[]) {
     unsigned int i;
     double dt = 0.005;  // days
     int lasteclipse = -1;

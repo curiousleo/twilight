@@ -1,40 +1,42 @@
 #ifndef GUARD_date_hh
 #define GUARD_date_hh
 
-#include <iostream>   // cout
-#include <sstream>    // ostd::stringstream class, needed for Date.str()
+#include <iostream>
+#include <sstream>
 
-struct Date {
-    // Date consists of a year, a month, and a day.
-    int year, month, day;
-
+class Date
+{
+  public:
     // Constructor with year, month, day as arguments
-    Date(const int y, const int m, const int d) :
-            year(y), month(m), day(d) {}
+    Date (const int y, const int m, const int d) :
+	year(y), month(m), day(d) {}
 
     // Default initialisation
-    Date() { reset(); }
+    Date (void) { reset(); }
 
     // Reset to UNIX time 0 :)
-    Date reset();
+    Date reset (void);
 
     // Returns a bool indicating whether the given date is valid.
-    bool valid() const;
+    bool valid (void) const;
 
     // String representation of our Date, used by operator <<
-    std::string str() const;
+    std::string str (void) const;
 
     // Operators
-    bool operator ==(Date _date) const;
-    Date operator +(int days) const;
-    Date operator +=(int days);
-    Date operator ++(int day);
-    Date operator ++();
+    bool operator == (const Date&) const;
+    Date operator + (int) const;
+    Date operator += (const int);
+    Date operator ++ (const int);
+    Date operator ++ (void);
     
     // Output stream
-    friend std::ostream& operator<<(std::ostream&, const Date&);
+    friend std::ostream& operator<< (std::ostream&, const Date&);
+
+  private:
+    int year, month, day;
 };
 
-int monthdays(const int, const int);
+int monthdays (const int, const int);
 
 #endif // GUARD

@@ -3,7 +3,9 @@
 using namespace std;
 using namespace Eigen;
 
-void euler(System* system) {
+void
+euler (System* system)
+{
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
@@ -15,7 +17,9 @@ void euler(System* system) {
     return;
 }
 
-void heun(System* system) {
+void
+heun (System* system)
+{
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
@@ -33,7 +37,9 @@ void heun(System* system) {
     return;
 }
 
-void rk4(System* system) {
+void
+rk4 (System* system)
+{
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
@@ -60,7 +66,9 @@ void rk4(System* system) {
     return;
 }
 
-void rkf(System* system) {
+void
+rkf (System* system)
+{
     // rs and vs are the initial positions and velocities, respectively
     // a is a function that takes the list of positions and returns a
     // list of accelerations
@@ -90,21 +98,21 @@ void rkf(System* system) {
 
     // Update this System with the weightened average values for r, v, a
     system->rs += (
-	          0.11851851851851851852 * v1
-	    // +  0 * v2
-	       +  0.51898635477582846004 * v3
-	       +  0.50613149034201665781 * v4
-	       -  0.18 * v5
-	       +  0.03636363636363636364 * v6)
-	       *  system->dt;
+                        0.11851851851851851852 * v1
+                  // +  0 * v2
+                     +  0.51898635477582846004 * v3
+                     +  0.50613149034201665781 * v4
+                     -  0.18 * v5
+                     +  0.03636363636363636364 * v6
+                  ) * system->dt;
     system->vs += (
-	          0.11851851851851851852 * a1
-	    // +  0 * a2
-	       +  0.51898635477582846004 * a3
-	       +  0.50613149034201665781 * a4
-	       -  0.18 * a5
-	       +  0.03636363636363636364 * a6)
-	       *  system->dt;
+                        0.11851851851851851852 * a1
+                  // +  0 * a2
+                     +  0.51898635477582846004 * a3
+                     +  0.50613149034201665781 * a4
+                     -  0.18 * a5
+                     +  0.03636363636363636364 * a6
+                  ) * system->dt;
 
     return;
 }

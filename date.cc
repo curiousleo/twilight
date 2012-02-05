@@ -7,7 +7,9 @@ using namespace std;
 // Days of the month. Attention: index must be month - 1.
 const int DAYS[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-int monthdays(const int year, const int month) {
+int
+monthdays (const int year, const int month)
+{
     if (month == 2) // February
         return (year % 4 == 0 &&
             (year % 400 == 0) == (year % 100 == 0)) ?
@@ -17,13 +19,17 @@ int monthdays(const int year, const int month) {
 }
 
 // Reset to UNIX time 0 :)
-Date Date::reset() {
+Date
+Date::reset (void)
+{
     year = 1970; month = 1; day = 1;
     return *this;
 }
 
 // Returns a bool indicating whether the given date is valid.
-bool Date::valid() const {
+bool
+Date::valid (void) const
+{
     if (day < 0 || month < 0 || month > 12)
         return false;
 
@@ -36,7 +42,9 @@ bool Date::valid() const {
 }
 
 // String representation of Date, used by operator <<
-string Date::str() const {
+string
+Date::str (void) const
+{
     ostringstream s;
     int w = s.width(2);
     char f = s.fill('0');
@@ -46,11 +54,15 @@ string Date::str() const {
     return s.str();
 }
 
-bool Date::operator==(Date _date) const {
+bool
+Date::operator== (const Date& _date) const
+{
     return (year == _date.year && month == _date.month && day == _date.day);
 }
 
-Date Date::operator+(int days) const {
+Date
+Date::operator+ (int days) const
+{
     Date d = *this;
     int mdays;
 
@@ -58,8 +70,13 @@ Date Date::operator+(int days) const {
 	mdays = monthdays(d.year, d.month);
 
 	if (d.day + days > mdays) {
-	    if (d.month == 12) { ++d.year; d.month = 1; }
-	    else { ++d.month; }
+	    if (d.month == 12) {
+		++d.year;
+		d.month = 1;
+	    }
+	    else
+		++d.month;
+
 	    days -= mdays;
 	}
 
@@ -73,13 +90,17 @@ Date Date::operator+(int days) const {
 }
 
 // Unary Date += int operator: Just translate to +.
-Date Date::operator+=(int days) {
+Date
+Date::operator+= (const int days)
+{
     *this = *this + days;
     return *this;
 }
 
 // Unary Date++ operator: Just translate to += 1.
-Date Date::operator++(int _) {
+Date
+Date::operator++ (const int _)
+{
     Date _date = *this;
     Date date = Date(year, month, day+1);
     if (date.valid()) {
@@ -97,11 +118,15 @@ Date Date::operator++(int _) {
 }
 
 // Unary ++Date operator: Just translate to Date++ and change Date.
-Date Date::operator++() {
+Date
+Date::operator++ ()
+{
     return *this += 1;
 }
 
-std::ostream& operator<<(std::ostream& os, const Date& d) {
+std::ostream&
+operator<< (std::ostream& os, const Date& d)
+{
     os << d.str();
     return os;
 }

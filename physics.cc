@@ -5,9 +5,11 @@ using namespace std;
 using namespace Eigen;
 
 // Calculates the force acting on body 1
-inline Vector3d gravity(
+inline Vector3d
+gravity (
         const Body& b1, const Vector3d& r1,
-        const Body& b2, const Vector3d& r2) {
+        const Body& b2, const Vector3d& r2)
+{
     Vector3d d = r2 - r1;
     // Units: (AU^3 / (kg day^2)) * kg^2 / AU^2 = kg AU / day^2
     return d.normalized() * GAUD * b1.mass * b2.mass / d.squaredNorm();
@@ -20,7 +22,9 @@ inline Vector3d gravity(
 }
 
 // Return updated state of the system
-Array3Xd System::gravitate(const Array3Xd& tmp_rs) const {
+Array3Xd
+System::gravitate (const Array3Xd& tmp_rs) const
+{
     const vector<Body>::size_type n = bodies.size();
     vector<Body>::size_type i, j;
     Array3Xd as_tmp;
@@ -44,7 +48,9 @@ Array3Xd System::gravitate(const Array3Xd& tmp_rs) const {
 }
 
 // Update positions
-Eclipse System::pulse(void) {
+Eclipse
+System::pulse (void)
+{
     switch (method) {
 	case IntegrationMethod::Euler: euler(this); break;
 	case IntegrationMethod::Heun:  heun(this); break;
@@ -55,7 +61,9 @@ Eclipse System::pulse(void) {
 }
 
 // Check if we're having a solar eclipse
-Eclipse System::eclipse(void) {
+Eclipse
+System::eclipse (void)
+{
     // Check alignment
     // Assuming the order of celestial bodies in vector bodies is Moon,
     // Earth, Sun
@@ -71,8 +79,10 @@ Eclipse System::eclipse(void) {
 }
 
 // Add a body
-void System::add_body(
-        const Body body, const Vector3d r, const Vector3d v) {
+void
+System::add_body (
+	const Body body, const Vector3d r, const Vector3d v)
+{
     bodies.push_back(body);
 
     rs.conservativeResize(NoChange, rs.cols() + 1);
@@ -83,8 +93,15 @@ void System::add_body(
 }
 
 // String formatter
-string System::str(void) const { return str(false); }
-string System::str(bool verbose) const {
+string
+System::str (void) const
+{
+    return str(false);
+}
+
+string
+System::str (bool verbose) const
+{
     ostringstream os;
     vector<Body>::size_type n = bodies.size(), i;
     os << n << endl;
@@ -96,7 +113,9 @@ string System::str(bool verbose) const {
 }
 
 // Input/Output stream
-std::istream& operator>>(std::istream& is, System& s) {
+std::istream&
+operator>> (std::istream& is, System& s)
+{
     string name;
     double rx, ry, rz, vx, vy, vz, m, R;
 
@@ -106,7 +125,10 @@ std::istream& operator>>(std::istream& is, System& s) {
             Vector3d(rx, ry, rz), Vector3d(vx, vy, vz));
     return is;
 }
-std::ostream& operator<<(std::ostream& os, const System& s) {
+
+std::ostream&
+operator<< (std::ostream& os, const System& s)
+{
     os << s.str();
     return os;
 }

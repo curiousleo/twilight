@@ -9,8 +9,8 @@ namespace po = boost::program_options;
 int cmdopts(int ac, char* av[], unsigned int& days, IntegrationMethod& method, double& dt) {
     po::options_description desc("Allowed options");
     desc.add_options()
-	("help", "produce help message")
-	("days,n", po::value<unsigned int>(&days)->default_value(2400), "time step (in days)")
+	("help,h", "produce help message")
+	("days,n", po::value<unsigned int>(&days)->default_value(2400), "number of days")
 	("dt,d", po::value<double>(&dt)->default_value(0.004, "0.004"), "time step (in days)")
 	("method,m", po::value<string>()->default_value("rkf"), "integration method: 'euler', 'heun', 'rk4', or 'rkf'")
     ;

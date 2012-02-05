@@ -32,31 +32,31 @@ struct Body
 
 class System
 {
-  public:
-    Eigen::Array3Xd rs;     // AU
-    Eigen::Array3Xd vs;     // AU / day
+ public:
+  Eigen::Array3Xd rs;     // AU
+  Eigen::Array3Xd vs;     // AU / day
 
-    IntegrationMethod method;
-    double dt;              // days (step time)
+  IntegrationMethod method;
+  double dt;              // days (step time)
 
-    System (IntegrationMethod m, double t) : method(m), dt(t) {}
+  System (IntegrationMethod m, double t) : method(m), dt(t) {}
 
-    void add_body (const Body, const Eigen::Vector3d, const Eigen::Vector3d);
+  void add_body (const Body, const Eigen::Vector3d, const Eigen::Vector3d);
 
-    Eclipse pulse (void);
-    Eclipse eclipse (void);
+  Eclipse pulse (void);
+  Eclipse eclipse (void);
 
-    std::string str (void) const;
-    std::string str (bool) const;
-    
-    Eigen::Array3Xd gravitate (const Eigen::Array3Xd&) const;
+  std::string str (void) const;
+  std::string str (bool) const;
+  
+  Eigen::Array3Xd gravitate (const Eigen::Array3Xd&) const;
 
-    // Input/Output stream
-    friend std::istream& operator>> (std::istream&, System&);
-    friend std::ostream& operator<< (std::ostream&, const System&);
+  // Input/Output stream
+  friend std::istream& operator>> (std::istream&, System&);
+  friend std::ostream& operator<< (std::ostream&, const System&);
 
-  private:
-    std::vector<Body> bodies;
+ private:
+  std::vector<Body> bodies;
 };
 
 // Output stream

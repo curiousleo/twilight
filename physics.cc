@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "numerics.hh"
 #include "physics.hh"
 

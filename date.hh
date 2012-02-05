@@ -2,7 +2,6 @@
 #define GUARD_date_hh
 
 #include <iostream>
-#include <sstream>
 
 class Date
 {

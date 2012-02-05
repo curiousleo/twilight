@@ -1,4 +1,5 @@
 #include <iomanip>
+#include <sstream>
 
 #include "date.hh"
 

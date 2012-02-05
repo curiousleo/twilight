@@ -2,7 +2,6 @@
 #define GUARD_physics_hh
 
 #include <iostream>
-#include <sstream>
 #include <vector>
 
 #include <Eigen/Dense>

@@ -13,7 +13,6 @@ Output
 Numerical integration
 ---------------------
 
-- Gaussian quadrature
 - Variable-degree RK? (Partial functions? Lambdas.)
 - Error-checking integration?
 
@@ -39,3 +38,4 @@ Done
 - (Add lunar eclipse detection as well)
 - Command-line arguments for dt, integration method, …
 - Use range-based for loops, for_each, lambdas, enum classes
+- Gaussian quadrature

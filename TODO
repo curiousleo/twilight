@@ -4,11 +4,12 @@ To do
 Numerical integration
 ---------------------
 
+- Gaussian quadrature
 - Variable-degree RK? (Partial functions? Lambdas.)
 - Error-checking integration?
 
-Solar Eclipse Detection
------------------------
+Eclipse Detection
+-----------------
 
 - Maybe add counter to skip check if the time difference to the last
   eclipse is too small

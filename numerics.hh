@@ -5,6 +5,7 @@
 
 void euler (System*);
 void heun (System*);
+void gauss (System*);
 void rk4 (System*);
 void rkf (System*);
 

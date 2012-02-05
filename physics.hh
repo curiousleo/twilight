@@ -17,7 +17,7 @@ enum class Eclipse
 
 enum class IntegrationMethod
 {
-  Euler, Heun, RK4, RKF
+  Euler, Heun, Gauss, RK4, RKF
 };
 
 struct Body

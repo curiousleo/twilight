@@ -23,7 +23,7 @@ monthdays (const int year, const int month)
 Date
 Date::reset (void)
 {
-    year = 1970; month = 1; day = 1;
+    year_ = 1970; month_ = 1; day_ = 1;
     return *this;
 }
 
@@ -31,15 +31,15 @@ Date::reset (void)
 bool
 Date::valid (void) const
 {
-    if (day < 0 || month < 0 || month > 12)
+    if (day_ < 0 || month_ < 0 || month_ > 12)
         return false;
 
-    if (month == 2) // February
-        return (day <= 28 ||
-            (day == 29 && year % 4 == 0 &&
-                (year % 400 == 0) == (year % 100 == 0)));
+    if (month_ == 2) // February
+        return (day_ <= 28 ||
+            (day_ == 29 && year_ % 4 == 0 &&
+                (year_ % 400 == 0) == (year_ % 100 == 0)));
     else
-        return (day <= DAYS[month-1]);
+        return (day_ <= DAYS[month_-1]);
 }
 
 // String representation of Date, used by operator <<
@@ -49,16 +49,18 @@ Date::str (void) const
     ostringstream s;
     int w = s.width(2);
     char f = s.fill('0');
-    s << day << setw(1) << "/" << setw(2) << month << setw(1) << "/" << year;
+    s << day_ << setw(1) << "/" << setw(2) << month_ << setw(1) << "/" << year_;
     s.width(w);
     s.fill(f);
     return s.str();
 }
 
 bool
-Date::operator== (const Date& _date) const
+Date::operator== (const Date& date) const
 {
-    return (year == _date.year && month == _date.month && day == _date.day);
+    return (year_ == date.year() &&
+        month_ == date.month() &&
+        day_ == date.day());
 }
 
 Date
@@ -68,21 +70,21 @@ Date::operator+ (int days) const
     int mdays;
 
     while (days != 0) {
-	mdays = monthdays(d.year, d.month);
+	mdays = monthdays(d.year(), d.month());
 
-	if (d.day + days > mdays) {
-	    if (d.month == 12) {
-		++d.year;
-		d.month = 1;
-	    }
-	    else
-		++d.month;
+	if (d.day() + days > mdays) {
+      if (d.month() == 12) {
+		d.set_year(d.year() + 1);
+		d.set_month(1);
+      }
+      else
+		d.set_month(d.month() + 1);
 
 	    days -= mdays;
 	}
 
 	else {
-	    d.day += days;
+	    d.set_day(d.day() + days);
 	    break;
 	}
     }
@@ -98,36 +100,10 @@ Date::operator+= (const int days)
     return *this;
 }
 
-// Unary Date++ operator: Just translate to += 1.
-Date
-Date::operator++ (const int _)
-{
-    Date _date = *this;
-    Date date = Date(year, month, day+1);
-    if (date.valid()) {
-        *this = date;
-        return _date;
-    }
-    date = Date(year, month+1, 1);
-    if (date.valid()) {
-        *this = date;
-        return _date;
-    }
-    date = Date(year+1, 1, 1);
-    *this = date;
-    return _date;
-}
-
-// Unary ++Date operator: Just translate to Date++ and change Date.
-Date
-Date::operator++ ()
-{
-    return *this += 1;
-}
-
 std::ostream&
 operator<< (std::ostream& os, const Date& d)
 {
-    os << d.str();
-    return os;
+  os << d.str();
+  return os;
 }
+

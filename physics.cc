@@ -27,18 +27,18 @@ gravity (
 Array3Xd
 System::gravitate (const Array3Xd& tmp_rs) const
 {
-    const vector<Body>::size_type n = bodies.size();
+    const vector<Body>::size_type n = bodies_.size();
     vector<Body>::size_type i, j;
     Array3Xd as_tmp;
-    as_tmp.resize(NoChange, rs.matrix().rows());
+    as_tmp.resize(NoChange, rs_.matrix().rows());
     as_tmp.setZero();
     Vector3d f;
 
     for (i = 0; i != (n - 1); ++i) {
-        Body b1 = bodies[i];
+        Body b1 = bodies_[i];
 
         for (j = i + 1; j != n; ++j) {
-            Body b2 = bodies[j];
+            Body b2 = bodies_[j];
 
             // Force acting on body 1
             f = gravity(b1, tmp_rs.col(i), b2, tmp_rs.col(j));
@@ -53,7 +53,7 @@ System::gravitate (const Array3Xd& tmp_rs) const
 Eclipse
 System::pulse (void)
 {
-    switch (method) {
+    switch (method_) {
 	case IntegrationMethod::Euler: euler(this); break;
 	case IntegrationMethod::Heun:  heun(this); break;
 	case IntegrationMethod::RK4:   rk4(this); break;
@@ -69,11 +69,11 @@ System::eclipse (void)
     // Check alignment
     // Assuming the order of celestial bodies in vector bodies is Moon,
     // Earth, Sun
-    Vector3d SM = rs.col(0) - rs.col(2); // Sun->Moon
-    Vector3d SE = rs.col(1) - rs.col(2); // Sun->Earth
+    Vector3d SM = rs_.col(0) - rs_.col(2); // Sun->Moon
+    Vector3d SE = rs_.col(1) - rs_.col(2); // Sun->Earth
 
     double costheta = SM.dot(SE) / sqrt(SM.squaredNorm() * SE.squaredNorm());
-    double eta      = asin(bodies[1].radius / SE.norm());
+    double eta      = asin(bodies_[1].radius / SE.norm());
     // double eta = 0.00006;
     return abs(costheta) < cos(eta) ?
         Eclipse::None: SM.squaredNorm() < SE.squaredNorm() ?
@@ -85,13 +85,13 @@ void
 System::add_body (
 	const Body body, const Vector3d r, const Vector3d v)
 {
-    bodies.push_back(body);
+    bodies_.push_back(body);
 
-    rs.conservativeResize(NoChange, rs.cols() + 1);
-    rs.rightCols<1>() = r;
+    rs_.conservativeResize(NoChange, rs_.cols() + 1);
+    rs_.rightCols<1>() = r;
 
-    vs.conservativeResize(NoChange, vs.cols() + 1);
-    vs.rightCols<1>() = v;
+    vs_.conservativeResize(NoChange, vs_.cols() + 1);
+    vs_.rightCols<1>() = v;
 }
 
 // String formatter
@@ -105,12 +105,12 @@ string
 System::str (bool verbose) const
 {
     ostringstream os;
-    vector<Body>::size_type n = bodies.size(), i;
+    vector<Body>::size_type n = bodies_.size(), i;
     os << n << endl;
 
     for(i = 0; i != n; ++i)
-        os << rs.col(i).row(0) << " " << rs.col(i).row(1) << " "
-            << 1 /* bodies[i].mass */ << endl;
+        os << rs_.col(i).row(0) << " " << rs_.col(i).row(1) << " "
+            << 1 /* bodies_[i].mass */ << endl;
     return os.str();
 }
 

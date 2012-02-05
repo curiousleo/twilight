@@ -6,9 +6,9 @@
 
 #include <Eigen/Dense>
 
-#define G     6.67384e-11d  // m^3 / (kg s^2)
+#define G     6.67384e-11d    // m^3 / (kg s^2)
 #define GAUD  1.4880787e-34d  // AU^3 / (kg day^2)
-#define AU    1.49598e11d   // m / AU
+#define AU    1.49598e11d     // m / AU
 
 enum class Eclipse
 {
@@ -33,14 +33,20 @@ struct Body
 class System
 {
  public:
-  Eigen::Array3Xd rs;     // AU
-  Eigen::Array3Xd vs;     // AU / day
+  // Initializers
+  System (IntegrationMethod method, double dt) : method_(method), dt_(dt) {}
 
-  IntegrationMethod method;
-  double dt;              // days (step time)
+  // Getters and Setters
+  Eigen::Array3Xd rs (void) { return rs_; }
+  void set_rs (const Eigen::Array3Xd& rs) { rs_ = rs; }
 
-  System (IntegrationMethod m, double t) : method(m), dt(t) {}
+  Eigen::Array3Xd vs (void) { return vs_; }
+  void set_vs (const Eigen::Array3Xd& vs) { vs_ = vs; }
 
+  IntegrationMethod method (void) { return method_; }
+  double dt (void) { return dt_; }
+
+  // Member methods
   void add_body (const Body, const Eigen::Vector3d, const Eigen::Vector3d);
 
   Eclipse pulse (void);
@@ -56,7 +62,13 @@ class System
   friend std::ostream& operator<< (std::ostream&, const System&);
 
  private:
-  std::vector<Body> bodies;
+  std::vector<Body> bodies_;
+
+  Eigen::Array3Xd rs_;     // AU
+  Eigen::Array3Xd vs_;     // AU / day
+
+  IntegrationMethod method_;
+  double dt_;              // days (step time)
 };
 
 // Output stream

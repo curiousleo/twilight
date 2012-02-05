@@ -1,6 +1,15 @@
 To do
 =====
 
+Output
+------
+
+- Being able to pipe things is nice, but using cerr as cmd output is
+  ugly: Find a better way of outputting two things, namely
+  * Planet positions in "show_sim" format, and
+  * Dates and types of eclipses in csv format,
+  simultaneously.
+
 Numerical integration
 ---------------------
 

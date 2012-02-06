@@ -25,7 +25,7 @@ cmdopts (
     (
       "method,m",
       po::value<string>()->default_value("rkf"),
-      "set integration method: 'euler', 'heun', 'rk4', or 'rkf'")
+      "set integration method: 'euler', 'heun', 'gauss', 'rk4', or 'rkf'")
   ;
 
   try {
@@ -48,10 +48,15 @@ cmdopts (
         method = IntegrationMethod::Euler;
       else if (mstr == "heun")
         method = IntegrationMethod::Heun;
+      else if (mstr == "gauss")
+        method = IntegrationMethod::Gauss;
       else if (mstr == "rk4")
         method = IntegrationMethod::RK4;
       else if (mstr == "rkf")
         method = IntegrationMethod::RKF;
+      else
+        throw invalid_argument(
+            "Unknown method :" + vm["method"].as<string>());
     }
 
     cerr << "Number of days: " << days
@@ -81,7 +86,7 @@ main (int ac, char* av[])
   if (cmdopts(ac, av, days, method, dt) != 0)
     return 1;
 
-  interval = floor(days / (dt * 200.0));
+  interval = floor(days / (dt * 1000.0));
 
   System system(method, dt);
 

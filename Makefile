@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -std=c++0x -Wall -I /usr/include/eigen3 -O3
+CFLAGS=-c -std=c++0x -Wall -I /usr/include/eigen3 -O3 -static
 LDFLAGS=-lboost_program_options
 SOURCES=main.cc physics.cc numerics.cc date.cc
 OBJECTS=$(SOURCES:.cc=.o)

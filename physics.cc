@@ -29,9 +29,7 @@ System::gravitate (const Array3Xd& tmp_rs) const
 {
   const vector<Body>::size_type n = bodies_.size();
   vector<Body>::size_type i, j;
-  Array3Xd as_tmp;
-  as_tmp.resize(NoChange, rs_.matrix().rows());
-  as_tmp.setZero();
+  Array3Xd as_tmp = Array3Xd::Zero(3, rs_.matrix().rows());
   Vector3d f;
 
   for (i = 0; i != (n - 1); ++i) {

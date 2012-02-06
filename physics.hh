@@ -38,10 +38,10 @@ class System
 
   // Getters and Setters
   Eigen::Array3Xd rs (void) { return rs_; }
-  void set_rs (const Eigen::Array3Xd& rs) { rs_ = rs; }
+  void update_rs (const Eigen::Array3Xd& rs) { rs_ += rs; }
 
   Eigen::Array3Xd vs (void) { return vs_; }
-  void set_vs (const Eigen::Array3Xd& vs) { vs_ = vs; }
+  void update_vs (const Eigen::Array3Xd& vs) { vs_ += vs; }
 
   IntegrationMethod method (void) { return method_; }
   double dt (void) { return dt_; }

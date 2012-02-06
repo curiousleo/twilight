@@ -11,8 +11,8 @@ euler (System* system)
   // list of accelerations
   Array3Xd a1 = system->gravitate(system->rs());
 
-  system->set_rs(system->rs() + system->vs() * system->dt());
-  system->set_vs(system->vs() + a1 * system->dt());
+  system->update_rs(system->vs() * system->dt());
+  system->update_vs(a1 * system->dt());
 
   return;
 }
@@ -31,8 +31,8 @@ heun (System* system)
   Array3Xd v2 = v1 + a1 * system->dt();
   Array3Xd a2 = system->gravitate(r2);
 
-  system->set_rs(system->rs() + 0.5 * system->dt() * (v1 + v2));
-  system->set_vs(system->vs() + 0.5 * system->dt() * (a1 + a2));
+  system->update_rs(0.5 * system->dt() * (v1 + v2));
+  system->update_vs(0.5 * system->dt() * (a1 + a2));
 
   return;
 }
@@ -70,7 +70,7 @@ gauss (System* system)
   Array3Xd v5 = v0 + a4 * 0.95308992296933 * system->dt();
   Array3Xd a5 = system->gravitate(r5);
 
-  system->set_rs(system->rs() + (
+  system->update_rs((
         // (322 - 13 * sqrt(70)) / 900
         0.23692688505619 * v1 +
         // (322 + 13 * sqrt(70)) / 900
@@ -82,7 +82,7 @@ gauss (System* system)
         // (322 - 13 * sqrt(70)) / 900
         0.23692688505619 * v5
         ) * system->dt() / 2);
-  system->set_vs(system->vs() + (
+  system->update_vs((
         // (322 - 13 * sqrt(70)) / 900
         0.23692688505619 * a1 +
         // (322 + 13 * sqrt(70)) / 900
@@ -121,8 +121,8 @@ rk4 (System* system)
   Array3Xd a4 = system->gravitate(r4);
 
   // Update this System with the weightened average values for r, v, a
-  system->set_rs(system->rs() + (system->dt()/6) * (v1 + 2 * (v2 + v3) + v4));
-  system->set_vs(system->vs() + (system->dt()/6) * (a1 + 2 * (a2 + a3) + a4));
+  system->update_rs((system->dt()/6) * (v1 + 2 * (v2 + v3) + v4));
+  system->update_vs((system->dt()/6) * (a1 + 2 * (a2 + a3) + a4));
 
   return;
 }
@@ -158,7 +158,7 @@ rkf (System* system)
   Array3Xd a6 = system->gravitate(r6);
 
   // Update this System with the weightened average values for r, v, a
-  system->set_rs(system->rs() + (
+  system->update_rs((
             0.11851851851851851852 * v1
           // +  0 * v2
            +  0.51898635477582846004 * v3
@@ -166,7 +166,7 @@ rkf (System* system)
            -  0.18 * v5
            +  0.03636363636363636364 * v6
           ) * system->dt());
-  system->set_vs(system->vs() + (
+  system->update_vs((
             0.11851851851851851852 * a1
           // +  0 * a2
            +  0.51898635477582846004 * a3

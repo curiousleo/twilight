@@ -3,11 +3,7 @@
 
 #include <cmath>
 
-#include <algorithm>
-#include <vector>
-
 #include <Eigen/Dense>
-#include <Eigen/Geometry>
 
 void
 tangencies (

@@ -18,3 +18,9 @@ tangencies (
 
   return pair<Vector2d, Vector2d>(tmp1 + tmp2, tmp1 - tmp2);
 }
+
+Hyperplane<double, 3>
+plane(const Array3Xd& rs)
+{
+  return Hyperplane<double, 3>::Through(rs.col(0), rs.col(1), rs.col(2));
+}

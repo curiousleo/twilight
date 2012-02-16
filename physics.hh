@@ -6,14 +6,11 @@
 
 #include <Eigen/Dense>
 
+#include "geometry.hh"
+
 #define G     6.67384e-11d    // m^3 / (kg s^2)
 #define GAUD  1.4880787e-34d  // AU^3 / (kg day^2)
 #define AU    1.49598e11d     // m / AU
-
-enum class Eclipse
-{
-  None, Solar, Lunar
-};
 
 enum class IntegrationMethod
 {
@@ -50,7 +47,6 @@ class System
   void add_body (const Body, const Eigen::Vector3d, const Eigen::Vector3d);
 
   Eclipse pulse (void);
-  Eclipse eclipse (void);
 
   std::string str (void) const;
   std::string str (bool) const;

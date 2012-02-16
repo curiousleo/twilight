@@ -58,25 +58,7 @@ System::pulse (void)
 	case IntegrationMethod::RK4:   rk4(this); break;
 	case IntegrationMethod::RKF:   rkf(this); break;
   }
-  return eclipse();
-}
-
-// Check if we're having a solar eclipse
-Eclipse
-System::eclipse (void)
-{
-  // Check alignment
-  // Assuming the order of celestial bodies in vector bodies is Moon,
-  // Earth, Sun
-  Vector3d SM = rs_.col(0) - rs_.col(2); // Sun->Moon
-  Vector3d SE = rs_.col(1) - rs_.col(2); // Sun->Earth
-
-  double costheta = SM.dot(SE) / sqrt(SM.squaredNorm() * SE.squaredNorm());
-  double eta    = asin(bodies_[1].radius / SE.norm());
-  // double eta = 0.00006;
-  return abs(costheta) < cos(eta) ?
-    Eclipse::None: SM.squaredNorm() < SE.squaredNorm() ?
-	  Eclipse::Solar : Eclipse::Lunar;
+  return Eclipse::None; // FIXME
 }
 
 // Add a body

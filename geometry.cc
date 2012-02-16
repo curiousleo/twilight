@@ -7,7 +7,7 @@ using namespace Eigen;
 // arguments are references to vectors which will be set to the tangents
 // found.
 void
-tangencies (
+tangents (
     Vector2d& tangent1, Vector2d& tangent2,
     const Vector2d& centre, double radius, const Vector2d& point)
 {
@@ -46,3 +46,16 @@ plane(
 
   return;
 }
+
+// Check if we're having a solar eclipse
+Eclipse
+eclipse(
+    const Vector2d& moon_centre,  const double moon_radius,
+    const Vector2d& earth_centre, const double earth_radius,
+    const Vector2d& sun_centre,   const double sun_radius)
+{
+  // Check if there is an eclipse at all. There is at least a partial
+  // eclipse if 
+  return Eclipse::None;
+}
+

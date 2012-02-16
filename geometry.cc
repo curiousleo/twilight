@@ -27,7 +27,8 @@ tangents (
 }
 
 // Projects three points in 3D space onto the 2D plane defined by those
-// three points.
+// three points. The projection of the first point becomes the origin of
+// the projection plane.
 void
 plane(
     Vector2d& p1, Vector2d& p2, Vector2d& p3,

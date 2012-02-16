@@ -3,6 +3,9 @@
 using namespace std;
 using namespace Eigen;
 
+// Finds the two tangent lines from a circle (all in 2D). The first two
+// arguments are references to vectors which will be set to the tangents
+// found.
 void
 tangencies (
     Vector2d& tangent1, Vector2d& tangent2,
@@ -10,6 +13,7 @@ tangencies (
 {
   Vector2d d = point - centre;
   Vector2d dnorm = d.normalized();
+  // Norm vector at right angles to dnorm.
   Vector2d dir(-dnorm[1], dnorm[0]);
   double theta = asin(radius/d.norm());
 
@@ -22,6 +26,8 @@ tangencies (
   return;
 }
 
+// Projects three points in 3D space onto the 2D plane defined by those
+// three points.
 void
 plane(
     Vector2d& p1, Vector2d& p2, Vector2d& p3,
@@ -32,7 +38,9 @@ plane(
   Vector3d i = d12.normalized();
   Vector3d j = i.cross(d12.cross(d13)).normalized();
 
+  // Origin of the plane (i, j) coordinate system.
   p1 = Vector2d(0, 0);
+  // Component-wise projections via dot product.
   p2 = Vector2d(d12.dot(i), d12.dot(j));
   p3 = Vector2d(d13.dot(i), d13.dot(j));
 

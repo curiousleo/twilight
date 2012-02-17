@@ -58,7 +58,10 @@ System::pulse (void)
 	case IntegrationMethod::RK4:   rk4(this); break;
 	case IntegrationMethod::RKF:   rkf(this); break;
   }
-  return Eclipse::None; // FIXME
+  const double r1 = bodies_[0].radius,
+               r2 = bodies_[1].radius,
+               r3 = bodies_[2].radius;
+  return eclipse(rs_.col(0), r1, rs_.col(1), r2, rs_.col(2), r3);
 }
 
 // Add a body

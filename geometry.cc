@@ -9,7 +9,7 @@ using namespace Eigen;
 void
 tangents (
     Vector2d& tangent1, Vector2d& tangent2,
-    const Vector2d& centre, double radius, const Vector2d& point)
+    const Vector2d& centre, const double radius, const Vector2d& point)
 {
   Vector2d d = point - centre;
   Vector2d dnorm = d.normalized();
@@ -51,12 +51,46 @@ plane(
 // Check if we're having a solar eclipse
 Eclipse
 eclipse(
-    const Vector2d& moon_centre,  const double moon_radius,
-    const Vector2d& earth_centre, const double earth_radius,
-    const Vector2d& sun_centre,   const double sun_radius)
+    const Vector3d& moon_centre,  const double moon_radius,
+    const Vector3d& earth_centre, const double earth_radius,
+    const Vector3d& sun_centre,   const double sun_radius)
 {
-  // Check if there is an eclipse at all. There is at least a partial
-  // eclipse if 
+  // Project everything onto a plane.
+  Vector2d moon, earth, sun;
+  plane(moon, earth, sun, moon_centre, earth_centre, sun_centre);
+
+  // Check if there is a solar eclipse at all.
+  if ((earth - sun).squaredNorm() < (moon - sun).squaredNorm())
+    return Eclipse::None;
+
+  // Find external homothetic centre of sun and earth.
+  Vector2d homothetic =
+      (earth - sun) * earth_radius / (sun_radius - earth_radius);
+  
+  // Again, check if there is an eclipse at all: Earth must be nearer to
+  // homothetic than moon.
+  if ((moon - homothetic).squaredNorm() < (earth - homothetic).squaredNorm())
+    return Eclipse::None;
+
+  // Find tangent points from homothetic centre of sun and earth to
+  // earth and moon (sun and earth are coincident as seen from the
+  // homothetic centre, so we need only one of the two.)
+  Vector2d earth_tangent1, earth_tangent2,
+           moon_tangent1, moon_tangent2;
+  tangents(earth_tangent1, earth_tangent2, earth, earth_radius, homothetic);
+  tangents(moon_tangent1, moon_tangent2, moon, moon_radius, homothetic);
+
+  // There is at least a partial eclipse if the moon is partly or fully
+  // within the external sun-earth bitangent lines.
+  Vector2d r = (earth - sun).normalized();
+  double cosphi    = fabs(r.dot((earth_tangent1 - homothetic).normalized()));
+  double costheta1 = fabs(r.dot((moon_tangent1 - homothetic).normalized()));
+  double costheta2 = fabs(r.dot((moon_tangent2 - homothetic).normalized()));
+
+  if (costheta1 < cosphi || costheta2 < cosphi)
+    return Eclipse::PartialSolar;
+
+
   return Eclipse::None;
 }
 

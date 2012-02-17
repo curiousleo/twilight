@@ -7,13 +7,13 @@
 
 enum class Eclipse
 {
-  None, Solar, Lunar
+  None, PartialSolar, AnnularSolar, TotalSolar
 };
 
 void
 tangents (
     Eigen::Vector2d&, Eigen::Vector2d&,
-    const Eigen::Vector2d&, double, const Eigen::Vector2d&);
+    const Eigen::Vector2d&, const double, const Eigen::Vector2d&);
 
 void
 plane(
@@ -21,6 +21,9 @@ plane(
     const Eigen::Vector3d&, const Eigen::Vector3d&, const Eigen::Vector3d&);
 
 Eclipse
-eclipse(const Eigen::Array3Xd&);
+eclipse(
+    const Eigen::Vector3d&, const double,
+    const Eigen::Vector3d&, const double,
+    const Eigen::Vector3d&, const double);
 
 #endif // GUARD

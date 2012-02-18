@@ -103,10 +103,10 @@ main (int ac, char* av[])
 
       cerr << start + lasteclipse << ",";
 
-    if (eclipse == Eclipse::PartialSolar)
-      cerr << "Solar,Partial" << endl;
-    else
-      cerr << "WTF?" << endl;
+    if (eclipse == Eclipse::Solar)
+      cerr << "Solar" << endl;
+    else if (eclipse == Eclipse::Lunar)
+      cerr << "Lunar" << endl;
     }
 
     if (++i == interval) {

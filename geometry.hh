@@ -7,7 +7,7 @@
 
 enum class Eclipse
 {
-  None, PartialSolar, AnnularSolar, TotalSolar
+  None, Solar, Lunar
 };
 
 void

@@ -48,7 +48,7 @@ plane(
   return;
 }
 
-// Check if body1 is casting a shadow on body2
+// Check if body1 is casting an umbra on body2
 bool
 eclipse(
     const Vector3d& body1_centre, const double body1_radius,

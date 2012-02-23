@@ -53,10 +53,10 @@ System::pulse (void)
 {
   switch (method_) {
 	case IntegrationMethod::Euler: euler(this); break;
-	case IntegrationMethod::Heun:  heun(this); break;
+	case IntegrationMethod::Heun:  heun(this);  break;
 	case IntegrationMethod::Gauss: gauss(this); break;
-	case IntegrationMethod::RK4:   rk4(this); break;
-	case IntegrationMethod::RKF:   rkf(this); break;
+	case IntegrationMethod::RK4:   rk4(this);   break;
+	case IntegrationMethod::RKF:   rkf(this);   break;
   }
 
   const double moon_radius = bodies_[0].radius,

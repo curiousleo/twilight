@@ -16,11 +16,11 @@ cmdopts (
     ("help,h", "print help message")
     (
       "days,n",
-      po::value<unsigned int>(&days)->default_value(2400),
+      po::value<unsigned int>(&days)->default_value(3650),
       "set duration of simulation (days)")
     (
       "dt,d",
-      po::value<double>(&dt)->default_value(0.004, "0.004"),
+      po::value<double>(&dt)->default_value(0.002, "0.002"),
       "set time step (days)")
     (
       "method,m",

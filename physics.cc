@@ -53,30 +53,27 @@ System::pulse (void)
 {
   switch (method_) {
 	case IntegrationMethod::Euler: euler(this); break;
-	case IntegrationMethod::Heun:  heun(this); break;
+	case IntegrationMethod::Heun:  heun(this);  break;
 	case IntegrationMethod::Gauss: gauss(this); break;
-	case IntegrationMethod::RK4:   rk4(this); break;
-	case IntegrationMethod::RKF:   rkf(this); break;
+	case IntegrationMethod::RK4:   rk4(this);   break;
+	case IntegrationMethod::RKF:   rkf(this);   break;
   }
-  return eclipse();
-}
 
-// Check if we're having a solar eclipse
-Eclipse
-System::eclipse (void)
-{
-  // Check alignment
-  // Assuming the order of celestial bodies in vector bodies is Moon,
-  // Earth, Sun
-  Vector3d SM = rs_.col(0) - rs_.col(2); // Sun->Moon
-  Vector3d SE = rs_.col(1) - rs_.col(2); // Sun->Earth
+  const double moon_radius = bodies_[0].radius,
+               earth_radius = bodies_[1].radius,
+               sun_radius = bodies_[2].radius;
+  const Vector3d moon = rs_.col(0),
+                 earth = rs_.col(1),
+                 sun = rs_.col(2);
 
-  double costheta = SM.dot(SE) / sqrt(SM.squaredNorm() * SE.squaredNorm());
-  double eta    = asin(bodies_[1].radius / SE.norm());
-  // double eta = 0.00006;
-  return abs(costheta) < cos(eta) ?
-    Eclipse::None: SM.squaredNorm() < SE.squaredNorm() ?
-	  Eclipse::Solar : Eclipse::Lunar;
+  if (eclipse(
+        moon, moon_radius, earth, earth_radius, sun, sun_radius))
+    return Eclipse::Solar;
+  else if (eclipse(
+        earth, earth_radius, moon, moon_radius, sun, sun_radius))
+    return Eclipse::Lunar;
+  else
+    return Eclipse::None;
 }
 
 // Add a body

@@ -63,9 +63,6 @@ System::pulse (void)
   if (eclipse(
         moon, moon_radius, earth, earth_radius, sun, sun_radius))
     return Eclipse::Solar;
-  else if (eclipse(
-        earth, earth_radius, moon, moon_radius, sun, sun_radius))
-    return Eclipse::Lunar;
   else
     return Eclipse::None;
 }

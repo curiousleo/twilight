@@ -15,12 +15,6 @@ gravity (
   Vector3d d = r2 - r1;
   // Units: (AU^3 / (kg day^2)) * kg^2 / AU^2 = kg AU / day^2
   return d.normalized() * GAUD * b1.mass * b2.mass / d.squaredNorm();
-  /*
-  // Alternatively:
-  double len = d.norm();
-  double c = GAUD * b1.mass * b2.mass / (len * len * len);
-  return Vector3d(c * d[0], c * d[1], c * d[2]);
-  */
 }
 
 // Return updated state of the system

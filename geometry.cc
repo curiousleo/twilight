@@ -48,78 +48,50 @@ plane(
   return;
 }
 
-// Check if we're having a solar eclipse
-Eclipse
+// Check if body1 is casting a shadow on body2
+bool
 eclipse(
-    const Vector3d& moon_centre,  const double moon_radius,
-    const Vector3d& earth_centre, const double earth_radius,
+    const Vector3d& body1_centre, const double body1_radius,
+    const Vector3d& body2_centre, const double body2_radius,
     const Vector3d& sun_centre,   const double sun_radius)
 {
   Vector2d homothetic;
 
   // Project everything onto a plane.
-  Vector2d moon, earth, sun;
-  plane(moon, earth, sun, moon_centre, earth_centre, sun_centre);
+  Vector2d body1, body2, sun;
+  plane(body1, body2, sun, body1_centre, body2_centre, sun_centre);
 
-  // Check if there might be a solar or lunar eclipse.
-  if ((earth - sun).squaredNorm() > (moon - sun).squaredNorm()) {
-    // Maybe a solar eclipse.
-    // Find external homothetic centre of sun and earth.
-    homothetic =
-        (earth - sun) * earth_radius / (sun_radius - earth_radius);
-    // Check if there is an eclipse at all: Earth must be nearer to
-    // homothetic than moon.
-    if ((moon - homothetic).squaredNorm() <
-        (earth - homothetic).squaredNorm())
-      return Eclipse::None;
-    
-    // Find tangent points from homothetic centre of sun and earth to
-    // earth and moon (sun and earth are coincident as seen from the
-    // homothetic centre, so we need only one of the two.)
-    Vector2d earth_tangent1, earth_tangent2,
-            moon_tangent1, moon_tangent2;
-    tangents(earth_tangent1, earth_tangent2, earth, earth_radius, homothetic);
-    tangents(moon_tangent1, moon_tangent2, moon, moon_radius, homothetic);
+  // Check if there might be an eclipse.
+  if ((body2 - sun).squaredNorm() < (body1 - sun).squaredNorm())
+    return false;
 
-    // There is at least a partial eclipse if the moon is partly or fully
-    // within the external sun-earth bitangent lines.
-    Vector2d r = (earth - sun).normalized();
-    double cosphi    = fabs(r.dot((earth_tangent1 - homothetic).normalized()));
-    double costheta1 = fabs(r.dot((moon_tangent1 - homothetic).normalized()));
-    double costheta2 = fabs(r.dot((moon_tangent2 - homothetic).normalized()));
+  // Find external homothetic centre of sun and body2.
+  homothetic =
+      (body2 - sun) * body2_radius / (sun_radius - body2_radius);
+  // Check if there is an eclipse at all: body2 must be nearer to
+  // homothetic than body1.
+  if ((body1 - homothetic).squaredNorm() <
+      (body2 - homothetic).squaredNorm())
+    return false;
+  
+  // Find tangent points from homothetic centre of sun and body2 to
+  // body2 and body1 (sun and body2 are coincident as seen from the
+  // homothetic centre, so we need only one of the two.)
+  Vector2d body2_tangent1, body2_tangent2,
+           body1_tangent1, body1_tangent2;
+  tangents(body2_tangent1, body2_tangent2, body2, body2_radius, homothetic);
+  tangents(body1_tangent1, body1_tangent2, body1, body1_radius, homothetic);
 
-    if (costheta1 < cosphi || costheta2 < cosphi)
-      return Eclipse::Solar;
+  // There is at least a partial eclipse if body1 is partly or fully
+  // within the external sun-body2 bitangent lines.
+  Vector2d r = (body2 - sun).normalized();
+  double cosphi    = fabs(r.dot((body2_tangent1 - homothetic).normalized()));
+  double costheta1 = fabs(r.dot((body1_tangent1 - homothetic).normalized()));
+  double costheta2 = fabs(r.dot((body1_tangent2 - homothetic).normalized()));
 
-  } else {
-    // Maybe a lunar eclipse.
-    // Find external homothetic centre of sun and moon.
-    homothetic =
-        (moon - sun) * moon_radius / (sun_radius - moon_radius);
-    // Check if there is an eclipse at all: Moon must be nearer to
-    // homothetic than earth.
-    if ((moon - homothetic).squaredNorm() >
-        (earth - homothetic).squaredNorm())
-      return Eclipse::None;
-    
-    // Find tangent points from homothetic centre of sun and earth to
-    // earth and moon (sun and earth are coincident as seen from the
-    // homothetic centre, so we need only one of the two.)
-    Vector2d earth_tangent1, earth_tangent2,
-             moon_tangent1, moon_tangent2;
-    tangents(earth_tangent1, earth_tangent2, earth, earth_radius, homothetic);
-    tangents(moon_tangent1, moon_tangent2, moon, moon_radius, homothetic);
-
-    // There is at least a partial eclipse if the earth is partly or fully
-    // within the external sun-moon bitangent lines.
-    Vector2d r = (moon - sun).normalized();
-    double cosphi    = fabs(r.dot((moon_tangent1 - homothetic).normalized()));
-    double costheta1 = fabs(r.dot((earth_tangent1 - homothetic).normalized()));
-    double costheta2 = fabs(r.dot((earth_tangent2 - homothetic).normalized()));
-
-    if (costheta1 < cosphi || costheta2 < cosphi)
-      return Eclipse::None;
-  }
-  return Eclipse::None;
+  if (costheta1 < cosphi || costheta2 < cosphi)
+    return true;
+  else
+    return false;
 }
 

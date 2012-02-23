@@ -20,7 +20,7 @@ plane(
     Eigen::Vector2d&, Eigen::Vector2d&, Eigen::Vector2d&,
     const Eigen::Vector3d&, const Eigen::Vector3d&, const Eigen::Vector3d&);
 
-Eclipse
+bool
 eclipse(
     const Eigen::Vector3d&, const double,
     const Eigen::Vector3d&, const double,

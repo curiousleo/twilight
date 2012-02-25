@@ -1,3 +1,8 @@
+// Twilight
+//
+// date.cc
+// Date class implementation
+
 #include <iomanip>
 #include <sstream>
 

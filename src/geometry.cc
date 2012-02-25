@@ -1,3 +1,8 @@
+// Twilight
+//
+// geometry.cc
+// Geometry-related functions
+
 #include "geometry.hh"
 
 using namespace std;

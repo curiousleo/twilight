@@ -1,3 +1,10 @@
+// Twilight
+//
+// numerics.hh
+// Numerical integration functions
+//
+// Provides different numerical integration methods.
+
 #ifndef GUARD_numerics_hh
 #define GUARD_numerics_hh
 

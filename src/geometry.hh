@@ -1,3 +1,11 @@
+// Twilight
+//
+// geometry.hh
+// Geometry-related functions
+//
+// Provides functions to analyse the geometry of the constellation of
+// sun, earth and moon.
+
 #ifndef GUARD_geometry_hh
 #define GUARD_geometry_hh
 
@@ -5,6 +13,7 @@
 
 #include <Eigen/Dense>
 
+/** Types of eclipses. */
 enum class Eclipse
 {
   None, Solar, Lunar

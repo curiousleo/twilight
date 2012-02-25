@@ -1,7 +1,7 @@
 CC         := g++
 CFLAGS     := -c -std=c++0x -Wall -I /usr/include/eigen3 -O3 -static
 LDFLAGS    := -lboost_program_options
-SOURCES    := src/main.cc lib/physics.cc lib/numerics.cc lib/date.cc lib/geometry.cc
+SOURCES    := src/main.cc src/physics.cc src/numerics.cc src/date.cc src/geometry.cc
 OBJECTS    := $(SOURCES:.cc=.o)
 EXECUTABLE := twilight
 

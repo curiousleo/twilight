@@ -5,9 +5,10 @@
 
 using namespace std;
 
-// Days of the month. Attention: index must be month - 1.
+/** Days of the month. Attention: index must be month - 1. */
 const int DAYS[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+/** Return number of days in this month of this year. */
 int
 monthdays (const int year, const int month)
 {
@@ -19,7 +20,7 @@ monthdays (const int year, const int month)
         return DAYS[month-1];
 }
 
-// Reset to UNIX time 0 :)
+/** Reset date to UNIX time 0. */
 Date
 Date::reset (void)
 {
@@ -27,7 +28,7 @@ Date::reset (void)
     return *this;
 }
 
-// Returns a bool indicating whether the given date is valid.
+/** Returns a bool indicating whether the date is valid. */
 bool
 Date::valid (void) const
 {
@@ -42,7 +43,7 @@ Date::valid (void) const
         return (day_ <= DAYS[month_-1]);
 }
 
-// String representation of Date, used by operator <<
+/** String representation of Date, used by operator <<. */
 string
 Date::str (void) const
 {
@@ -55,6 +56,7 @@ Date::str (void) const
     return s.str();
 }
 
+/** Equality operator. */
 bool
 Date::operator== (const Date& date) const
 {
@@ -63,6 +65,11 @@ Date::operator== (const Date& date) const
         day_ == date.day());
 }
 
+/**
+ * Plus operator. Increases the date by a number of days.
+ *
+ * \param days Number of days by which the date is increased
+ */
 Date
 Date::operator+ (int days) const
 {
@@ -92,7 +99,11 @@ Date::operator+ (int days) const
     return d;
 }
 
-// Unary Date += int operator: Just translate to +.
+/**
+ * Unary Date += int operator: Just translate to +.
+ *
+ * \param days Number of days by which the date is increased
+ */
 Date
 Date::operator+= (const int days)
 {
@@ -100,6 +111,12 @@ Date::operator+= (const int days)
     return *this;
 }
 
+/**
+ * Output stream operator <<.
+ *
+ * \param os Output stream to write to
+ * \param d  Date
+ */
 std::ostream&
 operator<< (std::ostream& os, const Date& d)
 {

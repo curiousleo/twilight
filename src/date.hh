@@ -1,12 +1,23 @@
+// Twilight
+//
+// date.hh
+// Date class definition
+//
+// Date - a simple Gregorian calendar date class.
+
 #ifndef GUARD_date_hh
 #define GUARD_date_hh
 
 #include <iostream>
 
+/** Simple Gregorian calendar date class. */
 class Date
 {
  public:
-  // Constructor with year, month, day as arguments
+  /** Default constructor */
+  Date (void) { reset(); }
+
+  /** Constructor with year, month, day as arguments */
   Date (const int y, const int m, const int d) :
     year_(y), month_(m), day_(d) {}
 
@@ -19,16 +30,8 @@ class Date
   int day (void) const { return day_; }
   void set_day (int day) { day_ = day; }
 
-  // Default initialisation
-  Date (void) { reset(); }
-
-  // Reset to UNIX time 0 :)
   Date reset (void);
-
-  // Returns a bool indicating whether the given date is valid.
   bool valid (void) const;
-
-  // String representation of our Date, used by operator <<
   std::string str (void) const;
 
   // Operators

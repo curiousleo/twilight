@@ -1,3 +1,11 @@
+// Twilight
+//
+// physics.hh
+// Physical model of the constellation of sun, earth, and moon
+//
+// The classes Body and System provide a physical model of the
+// constellation of sun, earth, and moon.
+
 #ifndef GUARD_physics_hh
 #define GUARD_physics_hh
 
@@ -8,32 +16,37 @@
 
 #include "geometry.hh"
 
-#define G     6.67384e-11d    // m^3 / (kg s^2)
-#define GAUD  1.4880787e-34d  // AU^3 / (kg day^2)
-#define AU    1.49598e11d     // m / AU
+/** The gravitational constant in m^3 / (kg s^2) */
+#define G     6.67384e-11d
+/** The gravitational constant in AU^3 / (kg day^2) */
+#define GAUD  1.4880787e-34d
+/** Metres per AU */
+#define AU    1.49598e11d
 
+/** Method of integration used to calculate velocities and positions. */
 enum class IntegrationMethod
 {
   Euler, Heun, Gauss, RK4, RKF
 };
 
+/** Describes the properties of a sperical body in space. */
 struct Body
 {
   double mass,        // kg
-         radius;        // AU
+         radius;      // AU
   std::string name;
 
-  Body (const double _m, const double _R, const std::string _n) :
-    mass(_m), radius(_R / AU), name(_n) {}
+  Body (const double _mass, const double _radius, const std::string _name) :
+    mass(_mass), radius(_radius / AU), name(_name) {}
 };
 
+/** The solar system. */
 class System
 {
  public:
-  // Initializers
+  /** Constructor (no default constructor provided) */
   System (IntegrationMethod method, double dt) : method_(method), dt_(dt) {}
 
-  // Getters and Setters
   Eigen::Array3Xd rs (void) { return rs_; }
   void update_rs (const Eigen::Array3Xd& rs) { rs_ += rs; }
 
@@ -41,39 +54,44 @@ class System
   void update_vs (const Eigen::Array3Xd& vs) { vs_ += vs; }
 
   IntegrationMethod method (void) { return method_; }
+
   double dt (void) { return dt_; }
 
   // Member methods
-  void add_body (const Body, const Eigen::Vector3d, const Eigen::Vector3d);
-
+  void add_body (
+      const Body body,
+      const Eigen::Vector3d position,
+      const Eigen::Vector3d velocity);
   Eclipse pulse (void);
-
   std::string str (void) const;
-  std::string str (bool) const;
-  
-  Eigen::Array3Xd gravitate (const Eigen::Array3Xd&) const;
+  Eigen::Array3Xd gravitate (const Eigen::Array3Xd& positions) const;
 
   // Input/Output stream
-  friend std::istream& operator>> (std::istream&, System&);
-  friend std::ostream& operator<< (std::ostream&, const System&);
+  friend std::istream& operator>> (std::istream& is, System& system);
+  friend std::ostream& operator<< (std::ostream& os, const System& system);
 
  private:
   std::vector<Body> bodies_;
 
-  Eigen::Array3Xd rs_;     // AU
-  Eigen::Array3Xd vs_;     // AU / day
+  /** Current positions of the system’s bodies in AUs. */
+  Eigen::Array3Xd rs_;
+
+  /** Current velocities of the system’s bodies in AUs per day. */
+  Eigen::Array3Xd vs_;
 
   IntegrationMethod method_;
-  double dt_;              // days (step time)
+
+  /** Time step in days. */
+  double dt_;
 };
 
 // Output stream
 std::ostream&
-operator<< (std::ostream&, const System&);
+operator<< (std::ostream& os, const System& system);
 
 Eigen::Vector3d
 gravity (
-    const Body&, const Eigen::Vector3d&,
-    const Body&, const Eigen::Vector3d&);
+    const Body& body1, const Eigen::Vector3d& position1,
+    const Body& body2, const Eigen::Vector3d& position2);
 
 #endif // GUARD

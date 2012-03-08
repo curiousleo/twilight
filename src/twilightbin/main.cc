@@ -10,7 +10,7 @@ cmdopts (
     int ac, char* av[],
     unsigned int& days, IntegrationMethod& method, double& dt)
 {
-  po::options_description desc("Allowed options");
+  po::options_description desc("Options");
   desc.add_options()
     ("help,h", "print help message")
     (
@@ -97,15 +97,9 @@ main (int ac, char* av[])
   for (t = 0; t < (double)days; t += dt) {
     eclipse = system.pulse();
 
-    if (eclipse != Eclipse::None && floor(t) != lasteclipse) {
+    if (eclipse == Eclipse::Solar && floor(t) != lasteclipse) {
       lasteclipse = floor(t);
-
-      cerr << start + lasteclipse << ",";
-
-    if (eclipse == Eclipse::Solar)
-      cerr << "Solar" << endl;
-    else if (eclipse == Eclipse::Lunar)
-      cerr << "Lunar" << endl;
+      cerr << start + lasteclipse << endl;
     }
 
     if (++i == interval) {

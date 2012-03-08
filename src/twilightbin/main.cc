@@ -1,7 +1,6 @@
 #include <boost/program_options.hpp>
 
-#include "physics.hh"
-#include "date.hh"
+#include <libtwilight/libtwilight.hh>
 
 using namespace std;
 namespace po = boost::program_options;

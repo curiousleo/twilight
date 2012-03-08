@@ -1,3 +1,8 @@
+/**
+ * \mainpage
+ * Twilight predicts solar eclipses.
+ */
+
 #ifndef GUARD_libtwilight_hh
 #define GUARD_libtwilight_hh
 

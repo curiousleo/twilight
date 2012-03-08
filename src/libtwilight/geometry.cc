@@ -1,11 +1,23 @@
+// Twilight
+//
+// geometry.cc
+// Geometry-related functions
+
 #include "geometry.hh"
 
 using namespace std;
 using namespace Eigen;
 
-// Finds the two tangent lines from a circle (all in 2D). The first two
-// arguments are references to vectors which will be set to the tangents
-// found.
+/**
+ * Finds the two tangent lines from a point to a circle (all in 2D).
+ *
+ * \param tangent1 First tangent point on the circle
+ * \param tangent2 Second tangent point on the circle
+ * \param centre   Centre point of the circle
+ * \param radius   Radius of the circle
+ * \param point    Point from which to draw the tangents (must be
+ *                 outside the circle)
+ */
 void
 tangents (
     Vector2d& tangent1, Vector2d& tangent2,
@@ -26,9 +38,18 @@ tangents (
   return;
 }
 
-// Projects three points in 3D space onto the 2D plane defined by those
-// three points. The projection of the first point becomes the origin of
-// the projection plane.
+/**
+ * Projects three points in 3D space onto the 2D plane defined by those
+ * three points. The projection of the first point becomes the origin of
+ * the projection plane.
+ *
+ * \param p1 Reference to the 2D projection of r1
+ * \param p2 Reference to the 2D projection of r2
+ * \param p3 Reference to the 2D projection of r3
+ * \param r1 Point 1 (in 3D)
+ * \param r2 Point 2 (in 3D)
+ * \param r3 Point 3 (in 3D)
+ */
 void
 plane(
     Vector2d& p1, Vector2d& p2, Vector2d& p3,
@@ -48,7 +69,16 @@ plane(
   return;
 }
 
-// Check if body1 is casting an umbra on body2
+/**
+ * Check if body1 is casting a shadow on body2
+ *
+ * \param body1_centre Centre point of body 1
+ * \param body1_radius Radius of body 1
+ * \param body2_centre Centre point of body 2
+ * \param body2_radius Radius of body 2
+ * \param sun_centre   Centre point of the sun
+ * \param sun_radius   Radius of the sun
+ */
 bool
 eclipse(
     const Vector3d& body1_centre, const double body1_radius,

@@ -1,6 +1,11 @@
 To do
 =====
 
+CMake
+-----
+
+- Add boost_program_options
+
 Output
 ------
 

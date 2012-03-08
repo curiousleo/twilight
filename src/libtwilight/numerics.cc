@@ -1,8 +1,14 @@
+// Twilight
+//
+// numerics.hh
+// Numerical integration functions
+
 #include "numerics.hh"
 
 using namespace std;
 using namespace Eigen;
 
+/** The simplest integration method: Euler. */
 void
 euler (System* system)
 {
@@ -17,6 +23,10 @@ euler (System* system)
   return;
 }
 
+/**
+ * Slightly more advanced than Euler: The Heun method, also known as
+ * "Predictor-corrector" method.
+ */
 void
 heun (System* system)
 {
@@ -37,6 +47,7 @@ heun (System* system)
   return;
 }
 
+/** Gaussian quadrature. */
 void
 gauss (System* system)
 {
@@ -98,6 +109,7 @@ gauss (System* system)
   return;
 }
 
+/** Fourth-order Runge-Kutta (RK4). */
 void
 rk4 (System* system)
 {
@@ -127,6 +139,7 @@ rk4 (System* system)
   return;
 }
 
+/** Runge-Kutta-Fehlberg (RKF, a fifth-order Runge-Kutta method). */
 void
 rkf (System* system)
 {

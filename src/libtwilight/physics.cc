@@ -6,20 +6,23 @@
 using namespace std;
 using namespace Eigen;
 
-// Calculates the force acting on body 1
-inline Vector3d
+/** Calculate the gravitational force exerted by body 2 on body 1. */
+Vector3d
 gravity (
-    const Body& b1, const Vector3d& r1,
-    const Body& b2, const Vector3d& r2)
+    const Body& body1, const Vector3d& position1,
+    const Body& body2, const Vector3d& position2)
 {
-  Vector3d d = r2 - r1;
-  // Units: (AU^3 / (kg day^2)) * kg^2 / AU^2 = kg AU / day^2
-  return d.normalized() * GAUD * b1.mass * b2.mass / d.squaredNorm();
+  Vector3d d = position2 - position1;
+  return d.normalized() * GAUD * body1.mass * body2.mass / d.squaredNorm();
 }
 
-// Return updated state of the system
+/**
+ * Return an Array containing the gravitational acceleration of each
+ * body in a system due to all other bodies in the system.
+ * \param positions Array of the current positions of the bodies
+ */
 Array3Xd
-System::gravitate (const Array3Xd& tmp_rs) const
+System::gravitate (const Array3Xd& positions) const
 {
   const vector<Body>::size_type n = bodies_.size();
   vector<Body>::size_type i, j;
@@ -33,7 +36,7 @@ System::gravitate (const Array3Xd& tmp_rs) const
       Body b2 = bodies_[j];
 
       // Force acting on body 1
-      f = gravity(b1, tmp_rs.col(i), b2, tmp_rs.col(j));
+      f = gravity(b1, positions.col(i), b2, positions.col(j));
       as_tmp.col(i) += f.array() / b1.mass;
       as_tmp.col(j) -= f.array() / b2.mass;
     }
@@ -41,7 +44,7 @@ System::gravitate (const Array3Xd& tmp_rs) const
   return as_tmp;
 }
 
-// Update positions
+/** Advance the state of the system by one time step. */
 Eclipse
 System::pulse (void)
 {
@@ -67,29 +70,23 @@ System::pulse (void)
     return Eclipse::None;
 }
 
-// Add a body
+/** Add a body to the system. */
 void
 System::add_body (
-	const Body body, const Vector3d r, const Vector3d v)
+	const Body body, const Vector3d position, const Vector3d velocity)
 {
   bodies_.push_back(body);
 
   rs_.conservativeResize(NoChange, rs_.cols() + 1);
-  rs_.rightCols<1>() = r;
+  rs_.rightCols<1>() = position;
 
   vs_.conservativeResize(NoChange, vs_.cols() + 1);
-  vs_.rightCols<1>() = v;
+  vs_.rightCols<1>() = velocity;
 }
 
-// String formatter
+/** Return string representation for the system. */
 string
 System::str (void) const
-{
-  return str(false);
-}
-
-string
-System::str (bool verbose) const
 {
   ostringstream os;
   vector<Body>::size_type n = bodies_.size(), i;
@@ -101,23 +98,24 @@ System::str (bool verbose) const
   return os.str();
 }
 
-// Input/Output stream
+/** Read a body from an input stream and add it to the system. */
 std::istream&
-operator>> (std::istream& is, System& s)
+operator>> (std::istream& is, System& system)
 {
   string name;
   double rx, ry, rz, vx, vy, vz, m, R;
 
   is >> name >> rx >> ry >> rz >> vx >> vy >> vz >> m >> R;
-  s.add_body(
+  system.add_body(
       Body(m, R, name),
       Vector3d(rx, ry, rz), Vector3d(vx, vy, vz));
   return is;
 }
 
+/** Print the system’s string representation to an output stream. */
 std::ostream&
-operator<< (std::ostream& os, const System& s)
+operator<< (std::ostream& os, const System& system)
 {
-  os << s.str();
+  os << system.str();
   return os;
 }

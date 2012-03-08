@@ -1,3 +1,11 @@
+// Twilight
+//
+// libtwilight.hh
+// Exports all libtwilight header files
+//
+// Users only need to include this header file to get access to all the
+// libtwilight functionality.
+
 /**
  * \mainpage
  * Twilight predicts solar eclipses.

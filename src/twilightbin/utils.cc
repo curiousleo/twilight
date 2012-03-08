@@ -70,3 +70,9 @@ cmdopts (
 
   return 0;
 }
+
+void
+write_dates (string s)
+{
+  ;
+}

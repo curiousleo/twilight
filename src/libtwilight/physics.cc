@@ -1,3 +1,8 @@
+// Twilight
+//
+// physics.cc
+// Physical model of the constellation of sun, earth, and moon
+
 #include <sstream>
 
 #include "numerics.hh"

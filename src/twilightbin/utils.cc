@@ -1,3 +1,8 @@
+// Twilight
+//
+// utils.cc
+// Utility functions used by the main function
+
 #include <boost/program_options.hpp>
 
 #include <libtwilight/libtwilight.hh>

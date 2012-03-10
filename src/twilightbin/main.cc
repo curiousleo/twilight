@@ -1,3 +1,8 @@
+// Twilight
+//
+// main.cc
+// Twilight main loop
+
 #include <libtwilight/libtwilight.hh>
 
 #include "utils.hh"

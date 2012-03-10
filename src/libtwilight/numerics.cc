@@ -1,6 +1,6 @@
 // Twilight
 //
-// numerics.hh
+// numerics.cc
 // Numerical integration functions
 
 #include "numerics.hh"

@@ -26,7 +26,7 @@ main (int ac, char* av[])
     cin >> system;
   i = 0;
 
-  for (unsigned int t = 0; t < (double)days; t += dt) {
+  for (double t = 0; t < (double)days; t += dt) {
     eclipse = system.pulse();
 
     if (eclipse == Eclipse::Solar && floor(t) != lasteclipse) {

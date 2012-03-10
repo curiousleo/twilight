@@ -4,7 +4,7 @@ local libtdir = "src/libtwilight/"
 local tbindir = "src/twilightbin/"
 
 solution "Twilight"
-   configurations { "Debug", "Release" }
+   configurations { "Release", "Debug" }
    location "build"
    targetname "twilight"
    buildoptions { "-std=c++0x" }

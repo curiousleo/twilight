@@ -15,7 +15,7 @@ class Date
 {
  public:
   /** Default constructor */
-  Date (void) { reset(); }
+  Date (void) : year_(1970), month_(1), day_(1) {}
 
   /** Constructor with year, month, day as arguments */
   Date (const int y, const int m, const int d) :
@@ -30,14 +30,10 @@ class Date
   int day (void) const { return day_; }
   void set_day (int day) { day_ = day; }
 
-  Date reset (void);
-  bool valid (void) const;
   std::string str (void) const;
 
   // Operators
-  bool operator == (const Date&) const;
   Date operator + (int) const;
-  Date operator += (const int);
   
   // Output stream
   friend std::ostream& operator<< (std::ostream&, const Date&);

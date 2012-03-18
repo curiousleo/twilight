@@ -10,6 +10,8 @@ using namespace Eigen;
 
 /**
  * The simplest integration method: Euler.
+ * Global error and local error from E. Kreyszig: Advanced Engineering
+ * Mathematics, 10th ed., p. 905, table 21.7.
  * 1 evaluation per step; global error O(dt); local error O(dt^2).
  */
 void

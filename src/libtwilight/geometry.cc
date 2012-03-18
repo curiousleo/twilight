@@ -9,7 +9,7 @@ using namespace std;
 using namespace Eigen;
 
 /**
- * Finds the two tangent lines from a point to a circle (all in 2D).
+ * Find the two tangent lines from a point to a circle (all in 2D).
  *
  * \param tangent1 First tangent point on the circle
  * \param tangent2 Second tangent point on the circle
@@ -39,7 +39,7 @@ tangents (
 }
 
 /**
- * Projects three points in 3D space onto the 2D plane defined by those
+ * Project three points in 3D space onto the 2D plane defined by those
  * three points. The projection of the first point becomes the origin of
  * the projection plane.
  *

@@ -35,6 +35,12 @@ def date_filter (tag):
     return tag.get('class') == [u'sortkey'] \
       and RE.match(tag.string.strip())
 
-if __name__ == '__main__':
+def print_eclipses ():
+    '''
+    Print a list of all solar eclipses in the 21st century.
+    '''
     eclipses = load_html(URL).find_all(date_filter)
     map(print, [tag.string.strip() for tag in eclipses])
+
+if __name__ == '__main__':
+    print_eclipses()

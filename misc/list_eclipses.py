@@ -1,8 +1,8 @@
 #!/usr/bin/python -O
 
 '''
-List all solar eclipses in the 21st century (from Wikipedia). Requires
-Python 2.7 and BeautifulSoup 4.
+List all solar eclipses in the 21st century (from Wikipedia).
+Requires Python 2.7 and BeautifulSoup 4.
 
 Usage: python load_eclipses.py > eclipses.txt
 '''
@@ -42,5 +42,6 @@ def print_eclipses ():
     eclipses = load_html(URL).find_all(date_filter)
     map(print, [tag.string.strip() for tag in eclipses])
 
+# Running as a program?
 if __name__ == '__main__':
     print_eclipses()

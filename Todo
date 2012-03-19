@@ -13,6 +13,8 @@ Output
 Numerical integration
 ---------------------
 
+- Fix Gauss: Does not seem to work properly – less accurate than Heun's
+  method.
 - Variable-degree RK? (Partial functions? Lambdas.)
 - Error-checking integration?
 

@@ -1,3 +1,11 @@
+#!/usr/bin/python3
+
+# Twilight
+#
+# list_eclipses.py
+# Download, parse and print Wikipedia's list of 21st century solar
+# eclipses.
+
 '''
 List all solar eclipses in the 21st century (from Wikipedia).
 Requires Python 3 and lxml (lxml.de).

@@ -32,7 +32,7 @@ Date::str (void) const
     ostringstream s;
     int w = s.width(2);
     char f = s.fill('0');
-    s << day_ << setw(1) << "/" << setw(2) << month_ << setw(1) << "/" << year_;
+    s << year_ << "-" << setw(2) << month_ << setw(1) << "-" << setw(2) << day_ << setw(1);
     s.width(w);
     s.fill(f);
     return s.str();

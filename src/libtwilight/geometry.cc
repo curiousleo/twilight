@@ -9,7 +9,7 @@ using namespace std;
 using namespace Eigen;
 
 /**
- * Finds the two tangent lines from a point to a circle (all in 2D).
+ * Find the two tangent lines from a point to a circle (all in 2D).
  *
  * \param tangent1 First tangent point on the circle
  * \param tangent2 Second tangent point on the circle
@@ -24,13 +24,13 @@ tangents (
     const Vector2d& centre, const double radius, const Vector2d& point)
 {
   Vector2d d = point - centre;
-  Vector2d dnorm = d.normalized();
-  // Norm vector at right angles to dnorm.
-  Vector2d dir(-dnorm[1], dnorm[0]);
+  Vector2d e1 = d.normalized();
+  // Norm vector at right angles to e1.
+  Vector2d e2 (-e1[1], e1[0]);
   double theta = asin(radius/d.norm());
 
-  Vector2d tmp1 = centre + radius * sin(theta) * dnorm;
-  Vector2d tmp2 = radius * cos(theta) * dir;
+  Vector2d tmp1 = centre + radius * sin(theta) * e1;
+  Vector2d tmp2 = radius * cos(theta) * e2;
 
   tangent1 = tmp1 + tmp2;
   tangent2 = tmp1 - tmp2;
@@ -39,7 +39,7 @@ tangents (
 }
 
 /**
- * Projects three points in 3D space onto the 2D plane defined by those
+ * Project three points in 3D space onto the 2D plane defined by those
  * three points. The projection of the first point becomes the origin of
  * the projection plane.
  *

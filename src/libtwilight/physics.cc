@@ -1,3 +1,8 @@
+// Twilight
+//
+// physics.cc
+// Physical model of the constellation of sun, earth, and moon
+
 #include <sstream>
 
 #include "numerics.hh"
@@ -29,6 +34,8 @@ System::gravitate (const Array3Xd& positions) const
   Array3Xd as_tmp = Array3Xd::Zero(3, rs_.matrix().rows());
   Vector3d f;
 
+  // These two nested for loops calculate the force acting between every
+  // pair of bodies exactly once.
   for (i = 0; i != (n - 1); ++i) {
     Body b1 = bodies_[i];
 

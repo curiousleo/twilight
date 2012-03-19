@@ -1,113 +1,56 @@
-#include <boost/program_options.hpp>
+// Twilight
+//
+// main.cc
+// Twilight main loop
 
 #include <libtwilight/libtwilight.hh>
 
+#include "utils.hh"
+
 using namespace std;
-namespace po = boost::program_options;
-
-int
-cmdopts (
-    int ac, char* av[],
-    unsigned int& days, IntegrationMethod& method, double& dt)
-{
-  po::options_description desc("Allowed options");
-  desc.add_options()
-    ("help,h", "print help message")
-    (
-      "days,n",
-      po::value<unsigned int>(&days)->default_value(3650),
-      "set duration of simulation (days)")
-    (
-      "dt,d",
-      po::value<double>(&dt)->default_value(0.002, "0.002"),
-      "set time step (days)")
-    (
-      "method,m",
-      po::value<string>()->default_value("rkf"),
-      "set integration method: 'euler', 'heun', 'gauss', 'rk4', or 'rkf'")
-  ;
-
-  try {
-    po::variables_map vm;
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);
-
-    if (vm.count("help")) {
-      cerr << desc << endl;
-      exit(1);
-    }
-
-    if (vm.count("dt"))
-      dt = vm["dt"].as<double>();
-
-    if (vm.count("method")) {
-      string mstr = vm["method"].as<string>();
-
-      if (mstr == "euler")
-        method = IntegrationMethod::Euler;
-      else if (mstr == "heun")
-        method = IntegrationMethod::Heun;
-      else if (mstr == "gauss")
-        method = IntegrationMethod::Gauss;
-      else if (mstr == "rk4")
-        method = IntegrationMethod::RK4;
-      else if (mstr == "rkf")
-        method = IntegrationMethod::RKF;
-      else
-        throw invalid_argument(
-            "Unknown method :" + vm["method"].as<string>());
-    }
-
-    cerr << "Number of days: " << days
-        << " | Time step: " << dt << " days"
-        << " | Method: " << vm["method"].as<string>() << endl;
-  }
-  catch(exception& e)
-  {
-    cerr << e.what() << "\n";
-    return 1;
-  }
-
-  return 0;
-}
 
 int
 main (int ac, char* av[])
 {
-  unsigned int i, interval, planets, days;
-  double t, dt;
+  // Initialise variables to be set by command-line options
+  unsigned int days;
+  double dt;
   IntegrationMethod method;
-  Eclipse eclipse;
 
-  Date start(2008, 1, 7);
-  int lasteclipse = -1;
-
+  // Populate variables from command-line options or defaults
   if (cmdopts(ac, av, days, method, dt) != 0)
+    // Exit on parsing error
     return 1;
 
-  interval = floor(days / (dt * 1000.0));
-
+  // interval: Number of iterations between the state of the system is
+  // written to cout
+  unsigned int i, planets,
+               interval = floor(days / (dt * 1000.0));
+  int lasteclipse = -1;
+  Eclipse eclipse;
+  Date start(2008, 1, 7);
   System system(method, dt);
 
+  // planets: Number of planets to read in
   cin >> planets;
   for (i = 0; i != planets; i++)
     cin >> system;
   i = 0;
 
-  for (t = 0; t < (double)days; t += dt) {
+  // Main loop: Iterate over time
+  for (double t = 0; t < (double)days; t += dt) {
+    // Pulse: system calculates new state, returns the type of eclipse
+    // that occurred (Eclipse::None or Eclipse::Solar)
     eclipse = system.pulse();
 
-    if (eclipse != Eclipse::None && floor(t) != lasteclipse) {
+    // If an eclipse occurred and this is not the day of the last
+    // eclipse, print it to cerr
+    if (eclipse == Eclipse::Solar && floor(t) != lasteclipse) {
       lasteclipse = floor(t);
-
-      cerr << start + lasteclipse << ",";
-
-    if (eclipse == Eclipse::Solar)
-      cerr << "Solar" << endl;
-    else if (eclipse == Eclipse::Lunar)
-      cerr << "Lunar" << endl;
+      cerr << start + lasteclipse << endl;
     }
 
+    // Write state of the system to cout at interval "interval"
     if (++i == interval) {
       cout << system;
       i = 0;

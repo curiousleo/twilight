@@ -4,11 +4,11 @@ local libtdir = "src/libtwilight/"
 local tbindir = "src/twilightbin/"
 
 solution "Twilight"
-   configurations { "Debug", "Release" }
+   configurations { "Release", "Debug" }
    location "build"
    targetname "twilight"
-   targetdir "bin"
    buildoptions { "-std=c++0x" }
+   flags { "ExtraWarnings" }
  
    project "TwilightBin"
       kind "ConsoleApp"
@@ -18,15 +18,19 @@ solution "Twilight"
       links { "LibTwilight", "boost_program_options" }
  
       configuration "Debug"
-         defines { "DEBUG" }
          flags { "Symbols" }
  
       configuration "Release"
-         defines { "NDEBUG" }
-         flags { "Optimize" }
+         flags { "OptimizeSpeed" }
 
    project "LibTwilight"
       kind "StaticLib"
       language "C++"
       files { libtdir .. "**.hh", libtdir .. "**.cc" }
       includedirs { eigen3dir }
+ 
+      configuration "Debug"
+         flags { "Symbols" }
+ 
+      configuration "Release"
+         flags { "OptimizeSpeed" }

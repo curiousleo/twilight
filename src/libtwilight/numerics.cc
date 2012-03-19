@@ -149,7 +149,9 @@ rk4 (System* system)
   return;
 }
 
-/** Runge-Kutta-Fehlberg (RKF, a fifth-order Runge-Kutta method). */
+/** Runge-Kutta-Fehlberg (RKF, a fifth-order Runge-Kutta method).
+  * 6 evaluations per step; global error O(dt^5); local error O(dt^6).
+  */
 void
 rkf (System* system)
 {

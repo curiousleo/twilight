@@ -109,15 +109,21 @@ eclipse(
   // homothetic centre, so we need only one of the two.)
   Vector2d body2_tangent1, body2_tangent2,
            body1_tangent1, body1_tangent2;
-  tangents(body2_tangent1, body2_tangent2, body2, body2_radius, homothetic);
-  tangents(body1_tangent1, body1_tangent2, body1, body1_radius, homothetic);
+
+  tangents(body2_tangent1, body2_tangent2,
+      body2, body2_radius, homothetic);
+  tangents(body1_tangent1, body1_tangent2,
+      body1, body1_radius, homothetic);
 
   // There is at least a partial eclipse if body1 is partly or fully
   // within the external sun-body2 bitangent lines.
   Vector2d r = (body2 - sun).normalized();
-  double cosphi    = fabs(r.dot((body2_tangent1 - homothetic).normalized()));
-  double costheta1 = fabs(r.dot((body1_tangent1 - homothetic).normalized()));
-  double costheta2 = fabs(r.dot((body1_tangent2 - homothetic).normalized()));
+  double cosphi =
+      fabs(r.dot((body2_tangent1 - homothetic).normalized()));
+  double costheta1 =
+      fabs(r.dot((body1_tangent1 - homothetic).normalized()));
+  double costheta2 =
+      fabs(r.dot((body1_tangent2 - homothetic).normalized()));
 
   if (costheta1 < cosphi || costheta2 < cosphi)
     return true;

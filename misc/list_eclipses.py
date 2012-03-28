@@ -1,3 +1,11 @@
+#!/usr/bin/python3
+
+# Twilight
+#
+# list_eclipses.py
+# Download, parse and print Wikipedia's list of 21st century solar
+# eclipses.
+
 '''
 List all solar eclipses in the 21st century (from Wikipedia).
 Requires Python 3 and lxml (lxml.de).
@@ -24,15 +32,15 @@ def load_html (url):
     # Download and parse
     return html.parse(request.urlopen(req)).getroot()
 
-def print_eclipses ():
+def list_eclipses ():
     '''
     Print a list of all solar eclipses in the 21st century.
     '''
     # Compile XPath expression
-    xpath = etree.XPath(XPATH, namespaces={'re' : RE_NS})
-    # Print all matches
-    for el in xpath(load_html(URL)): print(el)
+    matches = etree.XPath(XPATH, namespaces={'re' : RE_NS})
+    # Return matches
+    return matches(load_html(URL))
 
 # Running as a program?
 if __name__ == '__main__':
-    print_eclipses()
+    for el in list_eclipses(): print(el)

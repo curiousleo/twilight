@@ -1,2 +1,5 @@
+build
+out
+*.pyc
 twilight
 libtwilight.a

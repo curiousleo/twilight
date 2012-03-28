@@ -63,7 +63,7 @@ cmdopts (
             "Unknown method :" + vm["method"].as<string>());
     }
 
-    cerr << "Number of days: " << days
+    cerr << "# Number of days: " << days
         << " | Time step: " << dt << " days"
         << " | Method: " << vm["method"].as<string>() << endl;
   }

@@ -17,11 +17,11 @@
 #include "geometry.hh"
 
 /** The gravitational constant in m^3 / (kg s^2) */
-#define G     6.67384e-11d
+#define G     6.67384e-11
 /** The gravitational constant in AU^3 / (kg day^2) */
-#define GAUD  1.4880787e-34d
+#define GAUD  1.4880787e-34
 /** Metres per AU */
-#define AU    1.49598e11d
+#define AU    1.49598e11
 
 /** Method of integration used to calculate velocities and positions. */
 enum class IntegrationMethod

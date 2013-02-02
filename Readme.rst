@@ -77,13 +77,13 @@ construction of the homothetic centre. If the Moon is between the
 external Sun–Earth bitangent lines, then there is a solar
 eclipse.
 
-.. figure:: misc/tangents.png
+.. figure:: https://github.com/curiousleo/twilight/raw/master/misc/tangents.png
    :alt: Finding the tangents to a circle
 
    Finding the tangents to a circle by construction of the homothetic
    centre.
 
-.. figure:: misc/constellation.png
+.. figure:: https://github.com/curiousleo/twilight/raw/master/misc/constellation.png
    :alt: No solar eclipse
 
    The Moon is not between the Sun-Earth tangents: No solar eclipse.
